@@ -34,5 +34,5 @@
       }
     }
   }
-
-set-pp-type Omit
+  unfold-rule "comp-hack"
+  { [ app-fun, app-arg ] ; fold 'expand }

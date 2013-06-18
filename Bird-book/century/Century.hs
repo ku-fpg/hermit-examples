@@ -17,6 +17,8 @@ data Value
 {-# RULES "comp-id-L"     forall f.     id . f      = f              #-}
 {-# RULES "comp-R-id"     forall x.     extend x    = extend x . id  #-}
 
+{-# RULES "comp-hack"     forall f g h k l.  f . g . h . k . l  = (f . g . h . k) . l  #-}
+
 {-# RULES "foldr-fusion1"  filter (ok . value)    . foldr extend  [] = foldr extend' []  #-}
 {-# RULES "foldr-fusion2"  map (fork (id, value)) . foldr extend' [] = foldr expand []   #-}
 
@@ -72,6 +74,7 @@ expand x = filter (ok . snd) . zip . cross (extend x, modify x) . unzip
 {-# RULES "expand-spec"  forall x. map (fork (id, value)) . extend' x = expand x . map (fork (id, value)) #-}
 expandSpecProof :: Datum -> [Candidate] -> [(Candidate, Value)]
 expandSpecProof x =  map (fork (id, value)) . extend' x
+                --   <=>
                 --   expand x . map (fork (id, value))
 
 modify :: Datum -> [Value] -> [Value]
