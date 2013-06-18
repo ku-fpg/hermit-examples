@@ -1,0 +1,38 @@
+{ rhs-of 'solutions
+  { app-arg ; inline 'candidates }
+  { [ app-fun, app-arg ] ; apply-rule "6.2" }
+  unfold-rule "comp-assoc-L"
+  { app-arg ; unfold-rule "foldr-fusion1" }
+}
+
+{ rhs-of 'candidates2 ; apply-rule "foldr-fusion2" }
+{ rhs-of 'solutions2
+  one-td (inline 'candidates2)
+}
+
+  rhs-of 'expandSpecProof
+  lam-body
+  one-td (unfold 'extend')
+  unfold-rule "comp-assoc-R"
+  { [ app-fun, app-arg ] ; unfold-rule "6.10" }
+  unfold-rule "comp-assoc-L"
+  { app-arg
+    { [app-fun, app-arg]
+      unfold-rule "6.9"
+      one-td (unfold-rule "map-id")
+    }
+    unfold-rule "comp-assoc-L"
+    { app-arg
+      unfold-rule "6.6"
+      one-td (unfold-rule "comp-id-L")
+      { [app-arg, app-arg] ; unfold-rule "6.4" }
+      { app-arg ; arg 2 ; unfold-rule "comp-R-id" }
+      unfold-rule "6.7"
+      { app-arg
+        one-td (unfold-rule "id-map")
+        unfold-rule "6.8"
+      }
+    }
+  }
+
+set-pp-type Omit
