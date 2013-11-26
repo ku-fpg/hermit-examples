@@ -1,38 +1,40 @@
+set-pp-type Omit
+
 { rhs-of 'solutions
-  { app-arg ; inline 'candidates }
-  { [ app-fun, app-arg ] ; apply-rule "6.2" }
-  unfold-rule "comp-assoc-L"
-  { app-arg ; unfold-rule "foldr-fusion1" }
+
+  -- filter (good . value) . candidates
+
+        { app-arg ; inline 'candidates }
+
+  -- filter (good . value) . foldr extend []
+
+        { [ app-fun, app-arg ] ; apply-rule "6.2" }
+        { unfold-rule "comp-assoc-L" }
+
+  -- filter (good . value) . filter (ok . value) . foldr extend []
+
+        { app-arg ; unfold-rule "foldr-fusion1" }
+
+  -- foldr extend' []
+
 }
 
-{ rhs-of 'candidates2 ; apply-rule "foldr-fusion2" }
+{ rhs-of 'candidates2
+
+  -- map (fork (id,value)) . foldr extend' []
+
+        { apply-rule "foldr-fusion2" }
+
+  -- foldr expand []
+
+}
+
 { rhs-of 'solutions2
-  one-td (inline 'candidates2)
-}
 
-  rhs-of 'expandSpecProof
-  lam-body
-  one-td (unfold 'extend')
-  unfold-rule "comp-assoc-R"
-  { [ app-fun, app-arg ] ; unfold-rule "6.10" }
-  unfold-rule "comp-assoc-L"
-  { app-arg
-    { [app-fun, app-arg]
-      unfold-rule "6.9"
-      one-td (unfold-rule "map-id")
-    }
-    unfold-rule "comp-assoc-L"
-    { app-arg
-      unfold-rule "6.6"
-      one-td (unfold-rule "comp-id-L")
-      { [app-arg, app-arg] ; unfold-rule "6.4" }
-      { app-arg ; arg 2 ; unfold-rule "comp-R-id" }
-      unfold-rule "6.7"
-      { app-arg
-        one-td (unfold-rule "id-map")
-        unfold-rule "6.8"
-      }
-    }
-  }
-  unfold-rule "comp-hack"
-  { [ app-fun, app-arg ] ; fold 'expand }
+  -- map fst . filter (good . snd) . candidates2
+
+        { one-td (inline 'candidates2) }
+
+  -- map fst . filter (good . snd) . foldr expand []
+
+}
