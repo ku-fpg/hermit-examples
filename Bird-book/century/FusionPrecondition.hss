@@ -6,7 +6,7 @@
 -- =>
 --    \ x -> expand x . map (fork (id, value))
 
--- To test, apply this to the: rhs-of 'expandSpecProof
+-- To test, apply this to the: rhs-of 'proofExpandSpec
 
 -------------------------------------------------------------
 

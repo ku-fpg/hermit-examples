@@ -1,0 +1,37 @@
+Problem
+-------
+
+When performing equational reasoning, we typically need to prove auxiliary lemmas.
+These lemmas are often stated using universally quantified variables, which are later instantiated when the lemma is used.
+Lemmas are often used several times in a proof, often with different instantiations.
+Lemmas are often equalities, which may then be used as rewrites either forward or backward.
+
+To replicate this reasoning in HERMIT, we need to:
+
+(1) State the lemma in some form that HERMIT can interpret;
+(2) Provide a proof that the lemma holds, in a form that HERMIT can check;
+(3) Be able to invoke the lemma as bidirectional rewrite, repeatedly.
+
+
+Options
+-------
+
+The following discussion only considers proving equalities.
+
+For (1), we can either:
+ (a) Use a GHC RULE
+ (b) Encode the expressions in KURE
+ (c) Write the expression in a Haskell source file
+
+(a) has limitations on what can be expressed, but is convenient syntax and gets type checked for free.  Most suitable for new HERMIT users.
+(b) is painful for the user, but allows precision regarding types/coercions.  Suitable for expert HERMIT users.
+(c) This is sort of half-way in between.  Clutters up the source file, but maybe a good compromise.  Ideally, we'd like a {-# HERMIT #-} pragma that tells GHC these definitions are only for use in HERMIT, and should be discarded afterwards.
+
+
+My approach to (2) has been for a proof to be a HERMIT script that rewrites the LHS into the RHS.  (Or, more generally, two scripts that rewrite the LHS and the RHS into some common intermediate expression.)
+Scoping is an issue.
+Thus far, I've addressed this by "running" the proof whenever the lemma is used, thereby always verifying it is valid at its use site, rather than just verifying it once.  This is inefficient (particularly if used with "anytd" or similar), but reliable.
+
+
+For (3), we just construct a bidirectional rewrite from the two expressions, and add it to the dictionary.
+The only complication is identifying which variables are concrete identifiers, and which are meta-variables that can be instantiated to any expression when used.

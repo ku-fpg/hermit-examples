@@ -1,0 +1,23 @@
+---------------------------
+-- Lemma 6.6
+--
+-- fork (f,g) . h  =>  fork (f . h, g . h)
+--
+--
+---------------------------
+
+-- fork (f,g) . h
+
+   { app-fun ; app-arg
+
+     -- fork (f,g)
+
+           { unfold 'fork ; lam-body ; case-reduce ; let-elim ; let-subst ; let-subst }
+
+     -- \ a -> (f a, g a)
+
+   }
+
+-- TODO
+
+-- fork (f . h, g . h)

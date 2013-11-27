@@ -13,9 +13,17 @@ set-pp-type Omit
 
   -- filter (good . value) . filter (ok . value) . foldr extend []
 
-        { app-arg ; unfold-rule "foldr-fusion1" }
+        { app-arg
 
-  -- foldr extend' []
+          -- filter (ok . value) . foldr extend []
+
+              { unfold-rule "foldr-fusion1" }
+
+          -- foldr extend' []
+
+        }
+
+  -- filter (good . value) . foldr extend' []
 
 }
 

@@ -1,0 +1,32 @@
+---------------------------
+-- Lemma 6.5a
+--
+-- fst . fork (f,g)  =>  f
+--
+--
+---------------------------
+
+-- fst . fork (f,g)
+
+         { unfold '. }
+
+-- \ x -> fst (fork (f,g) x)
+
+   { lam-body
+
+     -- fst (fork (f,g) x)
+
+            { app-arg ; unfold 'fork ; case-reduce ; let-elim ; let-subst ; let-subst }
+
+     -- fst (f x , g x)
+
+            { unfold 'fst ; case-reduce ; let-elim ; let-subst ; let-subst }
+     -- f x
+
+   }
+
+-- \ x -> f x
+
+         { eta-reduce }
+
+-- f
