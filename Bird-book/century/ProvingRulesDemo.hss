@@ -1,0 +1,4 @@
+load-as-rewrite "F" "FusionPrecondition.hss"
+parent-of (binding-group-of  'solutions2) ; prog-tail -- need a way to navigate to the end of the program
+rule-help "expand-spec"
+verify-rule "expand-spec" F id
