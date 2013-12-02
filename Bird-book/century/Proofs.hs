@@ -28,9 +28,19 @@ proof_6_6 = \ f g h -> fork (f,g) . h
           -- =>
           -- fork (f . h, g . h)
 
+proof_6_6' :: (b -> c) -> (b -> d) -> (a -> b) -> a -> (c,d)
+proof_6_6' = \ f g h -> fork (f . h, g . h)
+           -- =>
+           -- fork (f,g) . h
+
 proof_6_7 :: (b -> y) -> (c -> z) -> (a -> b) -> (a -> c) -> a -> (y,z)
 proof_6_7 = \ f g h k -> fork (f . h, g . k)
           -- =>
           -- cross (f,g) . fork (h,k)
+
+proof_6_7' :: (b -> y) -> (c -> z) -> (a -> b) -> (a -> c) -> a -> (y,z)
+proof_6_7' = \ f g h k -> cross (f,g) . fork (h,k)
+           -- =>
+           -- fork (f . h, g . k)
 
 -------------------------------------------------

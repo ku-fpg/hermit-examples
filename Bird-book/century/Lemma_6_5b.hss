@@ -6,27 +6,5 @@
 --
 ---------------------------
 
--- snd . fork (f,g)
-
-         { unfold '. }
-
--- \ x -> snd (fork (f,g) x)
-
-   { lam-body
-
-     -- snd (fork (f,g) x)
-
-            { app-arg ; unfold 'fork ; case-reduce ; let-elim ; let-subst ; let-subst }
-
-     -- snd (f x , g x)
-
-            { unfold 'snd ; case-reduce ; let-elim ; let-subst ; let-subst }
-     -- f x
-
-   }
-
--- \ x -> g x
-
-         { eta-reduce }
-
--- f
+one-td (unfold 'fork)
+bash

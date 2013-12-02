@@ -1,10 +1,10 @@
 ---------------------------
--- Lemma 6.5a
+-- Lemma 6.6 (left-hand side)
 --
--- fst . fork (f,g)  =>  f
+-- fork (f,g) . h  =>  \ x -> (f (h x), g (h x))
 --
 --
 ---------------------------
 
 one-td (inline 'fork)
-bash
+smash

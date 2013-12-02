@@ -1,4 +1,15 @@
-load-as-rewrite "F" "FusionPrecondition.hss"
+load-as-rewrite "6.5a-proof" "Lemma_6_5a.hss"
+load-as-rewrite "6.5b-proof" "Lemma_6_5b.hss"
+load-as-rewrite "6.6-proof-lhs" "Lemma_6_6_left.hss"
+load-as-rewrite "6.6-proof-rhs" "Lemma_6_6_right.hss"
+load-as-rewrite "6.7-proof-lhs" "Lemma_6_7_left.hss"
+load-as-rewrite "6.7-proof-rhs" "Lemma_6_7_right.hss"
+load-as-rewrite "ExpandSpec-proof" "ExpandSpec.hss"
+
 parent-of (binding-group-of  'solutions2) ; prog-tail -- need a way to navigate to the end of the program
-rule-help "expand-spec"
-verify-rule "expand-spec" F id
+
+verify-rule "6.5a" "6.5a-proof" id
+verify-rule "6.5b" "6.5b-proof" id
+verify-rule "6.6" "6.6-proof-lhs" "6.6-proof-rhs"
+verify-rule "6.7" "6.7-proof-lhs" "6.7-proof-rhs"
+verify-rule "expand-spec" "ExpandSpec-proof" id
