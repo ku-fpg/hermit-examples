@@ -12,8 +12,8 @@ data Value
 {-# RULES "comp-assoc-L"  [1] forall f g h. (f . g) . h = f . (g . h)    #-}
 {-# RULES "comp-assoc-R"  [1] forall f g h. f . (g . h) = (f . g) . h    #-}
 {-# RULES "map-fusion"    [1] forall f g.   map (f . g) = map f . map g  #-}
-{-# RULES "map-id"                      map id      = id             #-}
-{-# RULES "id-map"                      id          = map id         #-}
+{-# RULES "map-id"        [1]               map id      = id             #-}
+{-# RULES "id-map"        [1]               id          = map id         #-}
 {-# RULES "comp-id-L"     [1] forall f.     id . f      = f              #-}
 {-# RULES "comp-R-id"     [1] forall x.     extend x    = extend x . id  #-}
 
