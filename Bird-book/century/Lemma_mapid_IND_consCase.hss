@@ -1,0 +1,12 @@
+---------------------------
+-- Lemma map-id-IND (cons case)
+--
+-- map id (y:ys)  =>  y:ys
+--
+--
+---------------------------
+
+unfold 'map
+case-reduce
+one-bu (forward (rule-unsafe "map-id-IND")) -- should invoke induction hypothesis here
+smash

@@ -1,0 +1,23 @@
+---------------------------
+-- Lemma map-id
+--
+-- map id  =>  id
+--
+--
+---------------------------
+
+load-as-rewrite "mapid-IND-nilCase"  "Lemma_mapid_IND_nilCase.hss"
+load-as-rewrite "mapid-IND-consCase" "Lemma_mapid_IND_consCase.hss"
+
+{ prog-end
+  verify-rule-by-list-induction "map-id-IND" 'xs mapid-IND-nilCase id mapid-IND-consCase id
+}
+
+eta-expand 'xs
+{ lam-body
+  rule-unsafe "map-id-IND"
+}
+
+-- \ xs -> xs
+
+-- need to fold id
