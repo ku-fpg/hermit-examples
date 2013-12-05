@@ -1,0 +1,11 @@
+---------------------------
+-- Lemma 6.8 (right-hand side, nil case)
+--
+-- unzip (map (fork (f , g)) [])  => ([],[])
+--
+--
+---------------------------
+
+any-td (inline ['fork, 'unzip])
+any-bu (inline ['map])
+smash

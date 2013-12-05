@@ -1,0 +1,12 @@
+---------------------------
+-- Lemma 6.8 (left-hand side, cons case)
+--
+-- fork (map f , map g) (x:xs)  =>
+--
+--
+---------------------------
+
+any-bu (inline ['map , 'fork ])
+smash
+
+-- TODO: needs induction

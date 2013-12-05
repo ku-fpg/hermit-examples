@@ -1,0 +1,32 @@
+---------------------------
+-- Lemma 6.8 (right to left)
+--
+-- unzip . map (fork (f , g))  =>  fork (map f , map g)
+--
+--
+---------------------------
+
+-- for testing
+prog-end
+rule-rhs-intro "6.8"
+rhs-of 'rhs
+lams-body
+
+
+-- unzip . map (fork (f , g))
+
+           { one-td (unfold 'unzip) }
+
+-- fork (map fst, map snd) . map (fork (f , g))
+
+           { rule-unsafe "6.6" } -- but the following works: unfold-rule "6.6"
+
+-- fork (map fst . map (fork (f , g)) , map snd . map (fork (f , g)))
+
+        --   { any-td (backward (rule-unsafe "map-fusion")) }
+
+-- fork (map (fst . fork (f , g)) , map (snd . fork (f , g)))
+
+        --   { one-td (foreward (rule-unsafe "6.5a")) ; one-td (foreward (rule-unsafe "6.5b")) }
+
+-- fork (map f , map g)
