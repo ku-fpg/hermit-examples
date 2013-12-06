@@ -1,0 +1,15 @@
+---------------------------
+-- Verify map-fusion-IND
+--
+-- map (f . g) xs  ==  (map f . map g) xs
+--
+--
+---------------------------
+
+load-as-rewrite "mapfusion-IND-nilCase-left"  "Lemma_mapfusion_IND_nilCase_left.hss"
+load-as-rewrite "mapfusion-IND-nilCase-right"  "Lemma_mapfusion_IND_nilCase_right.hss"
+load-as-rewrite "mapfusion-IND-consCase-left" "Lemma_mapfusion_IND_consCase_left.hss"
+load-as-rewrite "mapfusion-IND-consCase-right" "Lemma_mapfusion_IND_consCase_right.hss"
+
+verify-rule-by-list-induction "map-fusion-IND" 'xs mapfusion-IND-nilCase-left mapfusion-IND-nilCase-right mapfusion-IND-consCase-left mapfusion-IND-consCase-right
+
