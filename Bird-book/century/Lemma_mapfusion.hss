@@ -1,0 +1,25 @@
+---------------------------
+-- Lemma map-fusion
+--
+-- map (f . g) = map f . map g
+--
+--
+---------------------------
+
+load-as-rewrite "mapfusion-IND-nilCase-left"  "Lemma_mapfusion_IND_nilCase_left.hss"
+load-as-rewrite "mapfusion-IND-nilCase-right"  "Lemma_mapfusion_IND_nilCase_right.hss"
+load-as-rewrite "mapfusion-IND-consCase-left" "Lemma_mapfusion_IND_consCase_left.hss"
+load-as-rewrite "mapfusion-IND-consCase-right" "Lemma_mapfusion_IND_consCase_right.hss"
+
+{ prog-end
+  verify-rule-by-list-induction "map-fusion-IND" 'xs mapfusion-IND-nilCase-left mapfusion-IND-nilCase-right mapfusion-IND-consCase-left mapfusion-IND-consCase-right
+}
+
+eta-expand 'xs
+{ lam-body
+  rule-unsafe "map-fusion-IND" -- This is valid, but we don't have a way to justify it with an inductive proof here.  We need a better representation of proof objects.
+}
+eta-reduce 'xs
+
+
+-- Problem:  This is a script, not a rewrite.  So we can't convert it to a rewrite and use it as a proof for "map-fusion" elsewhere.  This isn't very modular.

@@ -1,0 +1,12 @@
+---------------------------
+-- Lemma map-fusion-IND (cons case, left)
+--
+-- map (f . g) (y:ys)  =>  f (g y) : map f (map g ys)
+--
+--
+---------------------------
+
+unfold 'map
+case-reduce
+one-bu (forward (rule-unsafe "map-fusion-IND")) -- should invoke induction hypothesis here
+smash

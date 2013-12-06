@@ -1,0 +1,10 @@
+---------------------------
+-- Lemma map-fusion-IND (nil case, right)
+--
+-- (map f . map g) []  => []
+--
+--
+---------------------------
+
+any-bu (inline 'map)
+smash

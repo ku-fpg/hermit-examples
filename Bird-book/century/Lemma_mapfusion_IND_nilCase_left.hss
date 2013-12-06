@@ -1,0 +1,10 @@
+---------------------------
+-- Lemma map-fusion-IND (nil case, left)
+--
+-- map (f . g) [] = []
+--
+--
+---------------------------
+
+unfold 'map
+smash

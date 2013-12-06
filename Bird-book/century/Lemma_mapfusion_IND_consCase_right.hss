@@ -1,0 +1,10 @@
+---------------------------
+-- Lemma map-fusion-IND (cons case, right)
+--
+-- (map f . map g) (y:ys)  =>  f (g y) : map f (map g ys)
+--
+--
+---------------------------
+
+any-bu (inline 'map)
+smash
