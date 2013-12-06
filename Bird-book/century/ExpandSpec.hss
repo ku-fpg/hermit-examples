@@ -8,8 +8,6 @@
 -- =>
 --    expand x . map (fork (id, value))
 
--- To test, apply this to the: rhs-of 'proofExpandSpec ; lam-body
-
 -------------------------------------------------------------
 
   -- map (fork (id, value)) . extend' x

@@ -19,6 +19,7 @@ data Value
 {-# RULES "id-map"        [1]               id          = map id         #-}
 {-# RULES "comp-id-L"     [1] forall f.     id . f      = f              #-}
 {-# RULES "comp-R-id"     [1] forall x.     extend x    = extend x . id  #-}
+{-# RULES "zip-unzip"     [1]               zip . unzip = id             #-}
 
 {-# RULES "comp-hack"     [1] forall f g h k l.  f . g . h . k . l  = (f . g . h . k) . l  #-}
 
@@ -29,14 +30,13 @@ data Value
 {-# RULES "6.3"  [1] forall x. filter (ok . value) . extend x = filter (ok . value) . extend x . filter (ok . value)  #-}
 {-# RULES "6.4"  [1] forall x. map value . extend x           = modify x . map value                                  #-}
 
-{-# RULES "6.5a"  [1] forall f g.     fst . fork (f,g)     = f                                                 #-}
-{-# RULES "6.5b"  [1] forall f g.     snd . fork (f,g)     = g                                                 #-}
-{-# RULES "6.6"   [1] forall f g h.   fork (f,g) . h       = fork (f . h, g . h)                               #-}
-{-# RULES "6.7"   [1] forall f g h k. fork (f . h, g . k)  = cross (f,g) . fork (h,k)                          #-}
+{-# RULES "6.5a"  [1] forall f g.     fst . fork (f,g)     = f                             #-}
+{-# RULES "6.5b"  [1] forall f g.     snd . fork (f,g)     = g                             #-}
+{-# RULES "6.6"   [1] forall f g h.   fork (f,g) . h       = fork (f . h, g . h)           #-}
+{-# RULES "6.7"   [1] forall f g h k. fork (f . h, g . k)  = cross (f,g) . fork (h,k)      #-}
+{-# RULES "6.8"   [1] forall f g.     fork (map f , map g) = unzip . map (fork (f , g))    #-}
+{-# RULES "6.9"   [1] forall f g.     map (fork (f , g))   = zip . fork (map f , map g)    #-}
 
-{-# RULES "6.8"   [1] forall f g.     fork (map f , map g)    = unzip . map (fork (f , g))                     #-}
-
-{-# RULES "6.9"   [1] forall f g.     map (fork (f , g))   = zip . fork (map f , map g)                        #-}
 {-# RULES "6.10"  [1] forall f g p.   map (fork (f,g)) . filter (p . g) = filter (p . snd) . map (fork (f,g))  #-}
 
 {-# RULES "expand-spec"  [1] forall x. map (fork (id, value)) . extend' x = expand x . map (fork (id, value)) #-}
