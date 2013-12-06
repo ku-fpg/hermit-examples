@@ -18,6 +18,4 @@ eta-expand 'xs
   rule-unsafe "map-id-IND"
 }
 
--- \ xs -> xs
-
--- need to fold id
+fold 'id
