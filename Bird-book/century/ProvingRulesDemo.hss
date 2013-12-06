@@ -7,7 +7,7 @@ load-as-rewrite "6.7-proof-rhs" "Lemma_6_7_right.hss"
 
 load-as-rewrite "ExpandSpec-proof" "ExpandSpec.hss"
 
-parent-of (binding-group-of  'solutions2) ; prog-tail -- need a way to navigate to the end of the program
+prog-end
 
 verify-rule "6.5a" "6.5a-proof" id
 verify-rule "6.5b" "6.5b-proof" id
