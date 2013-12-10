@@ -9,19 +9,18 @@ data Candidate
 
 data Value
 
-{-# RULES "comp-assoc-L"  [1] forall f g h. (f . g) . h = f . (g . h)    #-}
-{-# RULES "comp-assoc-R"  [1] forall f g h. f . (g . h) = (f . g) . h    #-}
+{-# RULES "comp-id-L"     [1] forall f.     id . f      = f              #-}
+{-# RULES "comp-id-R"     [1] forall f.     f . id      = f              #-}
+{-# RULES "comp-assoc"    [1] forall f g h. (f . g) . h = f . (g . h)    #-}
 
 {-# RULES "map-fusion"     [1] forall f g.     map (f . g)    = map f . map g       #-}
-{-# RULES "map-fusion-IND" [1] forall f g xs.  map (f . g) xs = (map f . map g) xs  #-}
+{-# RULES "map-fusion-eta" [1] forall f g xs.  map (f . g) xs = (map f . map g) xs  #-}
 
-{-# RULES "map-id"        [1]               map id      = id             #-}
-{-# RULES "map-id-IND"    [1] forall xs.    map id xs   = xs             #-}
+{-# RULES "map-id"        [1]               map id      = id   #-}
+{-# RULES "map-id-eta"    [1] forall xs.    map id xs   = xs   #-}
 
-{-# RULES "id-map"        [1]               id          = map id         #-}
-{-# RULES "comp-id-L"     [1] forall f.     id . f      = f              #-}
-{-# RULES "comp-R-id"     [1] forall x.     extend x    = extend x . id  #-}
-{-# RULES "zip-unzip"     [1]               zip . unzip = id             #-}
+
+{-# RULES "zip-unzip"     [1]               zip . unzip = id   #-}
 
 {-# RULES "comp-hack"     [1] forall f g h k l.  f . g . h . k . l  = (f . g . h . k) . l  #-}
 
