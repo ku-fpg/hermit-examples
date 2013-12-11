@@ -1,21 +1,33 @@
 ---------------------------
--- Lemma 6.9 (right to left)
+-- Lemma 6.9
 --
--- zip . fork (map f , map g)  =>  map (fork (f , g))
+-- forall f g.   zip . fork (map f , map g)  =>  map (fork (f , g))
 --
 --
 ---------------------------
 
 -- zip . fork (map f , map g)
 
-         { app-arg ; lemma "6.8" }
+      { eta-expand 'xs ; smash }
 
--- zip . unzip . map (fork (f , g))
+-- \ xs -> zip (fork (map f , map g) xs)
 
-         { backward (lemma "comp-assoc") ; [app-fun, app-arg] ; lemma "zip-unzip" }
+      { lam-body
 
--- id . map (fork (f , g))
+--         zip (fork (map f , map g) xs)
 
-         { lemma "comp-id-L" }
+                { one-td (unfold 'fork) ; smash }
+
+--         zip (map f xs , map g xs)
+
+                { backward (lemma "6.9-eta") }
+
+--         map (fork (f , g)) xs
+
+      }
+
+-- \ xs -> map (fork (f , g)) xs
+
+      { eta-reduce 'xs }
 
 -- map (fork (f , g))

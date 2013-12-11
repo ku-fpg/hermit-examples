@@ -1,0 +1,14 @@
+---------------------------
+-- Verify 6.10
+--
+-- forall f g p.
+--
+--      map (fork (f,g)) . filter (p . g)
+--   =
+--      filter (p . snd) . map (fork (f,g))
+--
+---------------------------
+
+rule-to-lemma "6.10"
+
+TODO

@@ -22,8 +22,6 @@ data Value
 {-# RULES "map-id"        [1]               map id      = id   #-}
 {-# RULES "map-id-eta"    [1] forall xs.    map id xs   = xs   #-}
 
-{-# RULES "zip-unzip"     [1]               zip . unzip = id   #-}
-
 {-# RULES "foldr-fusion1" [1] filter (ok . value)    . foldr extend  [] = foldr extend' []  #-}
 {-# RULES "foldr-fusion2" [1] map (fork (id, value)) . foldr extend' [] = foldr expand []   #-}
 
@@ -36,7 +34,9 @@ data Value
 {-# RULES "6.6"   [1] forall f g h.   fork (f,g) . h       = fork (f . h, g . h)           #-}
 {-# RULES "6.7"   [1] forall f g h k. fork (f . h, g . k)  = cross (f,g) . fork (h,k)      #-}
 {-# RULES "6.8"   [1] forall f g.     fork (map f , map g) = unzip . map (fork (f , g))    #-}
-{-# RULES "6.9"   [1] forall f g.     map (fork (f , g))   = zip . fork (map f , map g)    #-}
+
+{-# RULES "6.9"     [1] forall f g.      map (fork (f , g))       =  zip . fork (map f , map g)   #-}
+{-# RULES "6.9-eta" [1] forall f g xys.  map (fork (f , g)) xys   =  zip (map f xys , map g xys)  #-}
 
 {-# RULES "6.10"  [1] forall f g p.   map (fork (f,g)) . filter (p . g) = filter (p . snd) . map (fork (f,g))  #-}
 
