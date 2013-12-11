@@ -8,6 +8,6 @@
 
 rule-to-lemma "6.8"
 
-load "lemma-6.8" "lemma-6.8.her"
+load "lemma-6.8" "lemma-6-8.her"
 
 verify-lemma "6.8" (flip-proof (script-to-proof "lemma-6.8"))

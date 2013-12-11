@@ -1,9 +1,0 @@
----------------------------
--- Lemma 6.7 (right-hand side)
---
--- cross (f,g) . fork (h,k)  =>  \ a -> (f (h a), g (k a))
---
---
----------------------------
-
-smash-extended-with [inline 'cross, inline 'fork]

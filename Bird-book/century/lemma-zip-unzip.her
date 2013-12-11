@@ -1,0 +1,25 @@
+---------------------------
+-- Lemma zip-unzip
+--
+-- zip . unzip  =>  id
+--
+--
+---------------------------
+
+-- zip . unzip
+
+           { any-call (unfold 'unzip) }
+
+-- zip . fork (map fst , map snd)
+
+           { one-td (backward (lemma "6.9")) }
+
+-- map (fork (fst , snd))
+
+           { app-arg ; lemma "fork-fst-snd" }
+
+-- map id
+
+           { lemma "map-id" }
+
+-- id

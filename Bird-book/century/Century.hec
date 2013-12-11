@@ -11,5 +11,6 @@ set-auto-corelint True
   load-and-run "verify-6-7.hec"
   load-and-run "verify-6-8.hec"
   load-and-run "verify-6-9.hec"
+  load-and-run "verify-zip-unzip.hec"
   load-and-run "verify-expand-spec.hec"
 }

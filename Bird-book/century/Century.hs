@@ -22,13 +22,6 @@ data Value
 {-# RULES "map-id"        [1]               map id      = id   #-}
 {-# RULES "map-id-eta"    [1] forall xs.    map id xs   = xs   #-}
 
-{-# RULES "foldr-fusion1" [1] filter (ok . value)    . foldr extend  [] = foldr extend' []  #-}
-{-# RULES "foldr-fusion2" [1] map (fork (id, value)) . foldr extend' [] = foldr expand []   #-}
-
-{-# RULES "6.2"  [1]           filter (good . value)          = filter (good . value) . filter (ok . value)           #-}
-{-# RULES "6.3"  [1] forall x. filter (ok . value) . extend x = filter (ok . value) . extend x . filter (ok . value)  #-}
-{-# RULES "6.4"  [1] forall x. map value . extend x           = modify x . map value                                  #-}
-
 {-# RULES "6.5a"  [1] forall f g.     fst . fork (f,g)     = f                             #-}
 {-# RULES "6.5b"  [1] forall f g.     snd . fork (f,g)     = g                             #-}
 {-# RULES "6.6"   [1] forall f g h.   fork (f,g) . h       = fork (f . h, g . h)           #-}
@@ -38,9 +31,21 @@ data Value
 {-# RULES "6.9"     [1] forall f g.      map (fork (f , g))       =  zip . fork (map f , map g)   #-}
 {-# RULES "6.9-eta" [1] forall f g xys.  map (fork (f , g)) xys   =  zip (map f xys , map g xys)  #-}
 
-{-# RULES "6.10"  [1] forall f g p.   map (fork (f,g)) . filter (p . g) = filter (p . snd) . map (fork (f,g))  #-}
+{-# RULES "fork-fst-snd" [1]  fork (fst , snd)  =  id  #-}
+{-# RULES "zip-unzip"    [1]  zip . unzip  =  id       #-}
 
 {-# RULES "expand-spec"  [1] forall x. map (fork (id, value)) . extend' x = expand x . map (fork (id, value)) #-}
+
+
+
+{-# RULES "6.10"  [1] forall f g p.   map (fork (f,g)) . filter (p . g) = filter (p . snd) . map (fork (f,g))  #-}
+
+{-# RULES "6.2"  [1]           filter (good . value)          = filter (good . value) . filter (ok . value)           #-}
+{-# RULES "6.3"  [1] forall x. filter (ok . value) . extend x = filter (ok . value) . extend x . filter (ok . value)  #-}
+{-# RULES "6.4"  [1] forall x. map value . extend x           = modify x . map value                                  #-}
+
+{-# RULES "foldr-fusion1" [1] filter (ok . value)    . foldr extend  [] = foldr extend' []  #-}
+{-# RULES "foldr-fusion2" [1] map (fork (id, value)) . foldr extend' [] = foldr expand []   #-}
 
 -------------------------------------------------
 

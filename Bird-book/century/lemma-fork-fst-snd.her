@@ -1,0 +1,25 @@
+---------------------------
+-- Lemma fork-fst.snd
+--
+-- fork (fst , snd)  =>  id
+--
+--
+---------------------------
+
+-- fork (fst , snd)
+
+           { eta-expand 'xs }
+
+-- \ xs -> fork (fst , snd) xs
+
+           { any-call (unfold 'fork) ; smash }
+
+-- \ xs -> (fst xs , snd xs)
+
+           { lam-body ; case-split-inline 'xs ; smash }
+
+-- \ xs -> xs
+
+           { fold 'id }
+
+-- id

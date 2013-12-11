@@ -1,0 +1,16 @@
+---------------------------
+-- Verify zip-unzip
+--
+-- zip . unzip  =  id
+--
+--
+---------------------------
+
+rule-to-lemma "fork-fst-snd"
+rule-to-lemma "zip-unzip"
+
+load "fork-fst-snd-proof" "lemma-fork-fst-snd.her"
+verify-lemma "fork-fst-snd" (script-to-proof "fork-fst-snd-proof")
+
+load "zip-unzip-proof" "lemma-zip-unzip.her"
+verify-lemma "zip-unzip" (script-to-proof "zip-unzip-proof")
