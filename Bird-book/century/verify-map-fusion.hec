@@ -10,6 +10,6 @@ rule-to-lemma "map-fusion"
 
 load-and-run "verify-map-fusion-eta.hec"
 
-define-script "map-fusion-proof" "eta-expand 'xs ; { lam-body ; lemma "map-fusion-eta" } ; eta-reduce"
+define-script "map-fusion-proof" "eta-expand 'xs ; { lam-body ; lemma map-fusion-eta } ; eta-reduce"
 
 verify-lemma "map-fusion" (script-to-proof "map-fusion-proof")

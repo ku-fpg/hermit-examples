@@ -8,8 +8,8 @@
 
 rule-to-lemma "6.9"
 
-load-and-run "verify-6.9-eta.hec"
+load-and-run "verify-6-9-eta.hec"
 
-load-script "6.9-proof" "lemma-6.9.her"
+load "6.9-proof" "lemma-6-9.her"
 
 verify-lemma "6.9" (flip-proof (script-to-proof "6.9-proof"))

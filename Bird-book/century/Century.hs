@@ -28,8 +28,8 @@ data Value
 {-# RULES "6.7"   [1] forall f g h k. fork (f . h, g . k)  = cross (f,g) . fork (h,k)      #-}
 {-# RULES "6.8"   [1] forall f g.     fork (map f , map g) = unzip . map (fork (f , g))    #-}
 
-{-# RULES "6.9"     [1] forall f g.      map (fork (f , g))       =  zip . fork (map f , map g)   #-}
-{-# RULES "6.9-eta" [1] forall f g xys.  map (fork (f , g)) xys   =  zip (map f xys , map g xys)  #-}
+{-# RULES "6.9"     [1] forall f g.     map (fork (f , g))      =  zip . fork (map f , map g)   #-}
+{-# RULES "6.9-eta" [1] forall f g xs.  map (fork (f , g)) xs   =  zip (map f xs , map g xs)    #-}
 
 {-# RULES "fork-fst-snd" [1]  fork (fst , snd)  =  id  #-}
 {-# RULES "zip-unzip"    [1]  zip . unzip  =  id       #-}
