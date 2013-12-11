@@ -28,6 +28,6 @@
 
 -- \ xs -> map (fork (f , g)) xs
 
-      { eta-reduce 'xs }
+      { eta-reduce }
 
 -- map (fork (f , g))
