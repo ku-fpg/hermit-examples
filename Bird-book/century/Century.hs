@@ -13,16 +13,16 @@ data Value
 {-# RULES "comp-id-R"     [1] forall f.     f . id      = f              #-}
 {-# RULES "comp-assoc"    [1] forall f g h. (f . g) . h = f . (g . h)    #-}
 
+-- This is ugly.
+{-# RULES "comp-assoc4"   [1] forall f g h k l.  f . g . h . k . l  = (f . g . h . k) . l  #-}
+
 {-# RULES "map-fusion"     [1] forall f g.     map (f . g)    = map f . map g       #-}
 {-# RULES "map-fusion-eta" [1] forall f g xs.  map (f . g) xs = (map f . map g) xs  #-}
 
 {-# RULES "map-id"        [1]               map id      = id   #-}
 {-# RULES "map-id-eta"    [1] forall xs.    map id xs   = xs   #-}
 
-
 {-# RULES "zip-unzip"     [1]               zip . unzip = id   #-}
-
-{-# RULES "comp-hack"     [1] forall f g h k l.  f . g . h . k . l  = (f . g . h . k) . l  #-}
 
 {-# RULES "foldr-fusion1" [1] filter (ok . value)    . foldr extend  [] = foldr extend' []  #-}
 {-# RULES "foldr-fusion2" [1] map (fork (id, value)) . foldr extend' [] = foldr expand []   #-}

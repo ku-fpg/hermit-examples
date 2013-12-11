@@ -1,0 +1,12 @@
+---------------------------
+-- Verify comp-assoc
+--
+-- forall f g h.  (f . g) . h  =  f . (g . h)
+--
+-- Rewrite both sides to: \ x -> f (g (h x))
+--
+---------------------------
+
+rule-to-lemma "comp-assoc"
+
+verify-lemma "comp-assoc" (rewrite-both-sides-to-proof smash smash)

@@ -1,0 +1,13 @@
+---------------------------
+-- Verify 6.8
+--
+-- forall f g.   fork (map f , map g)  =  unzip . map (fork (f , g))
+--
+--
+---------------------------
+
+rule-to-lemma "6.8"
+
+load "lemma-6.8" "lemma-6.8.her"
+
+verify-lemma "6.8" (flip-proof (script-to-proof "lemma-6.8"))

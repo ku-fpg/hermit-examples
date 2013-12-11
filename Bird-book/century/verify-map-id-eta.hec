@@ -1,0 +1,14 @@
+---------------------------
+-- Verify map-id-eta
+--
+-- map id xs = xs
+--
+--
+---------------------------
+
+rule-to-lemma "map-id-eta"
+
+define-script "map-id-eta-nil"   "unfold 'map ; smash"
+define-script "map-id-eta-cons"  "unfold 'map ; case-reduce ; one-bu (forward (lemma "map-id-eta")) ; smash" -- should invoke induction hypothesis here
+
+verify-lemma "map-id-eta" (inductive-proof 'xs [ '[] , ': ] [ map-id-eta-nil , map-id-eta-cons ] )

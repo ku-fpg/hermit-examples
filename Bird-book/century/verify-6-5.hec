@@ -1,0 +1,13 @@
+---------------------------
+-- Verify 6.5
+--
+-- fst . fork (f,g)  =  f
+-- snd . fork (f,g)  =  g
+--
+---------------------------
+
+rule-to-lemma "6.5a"
+rule-to-lemma "6.5b"
+
+verify-lemma "6.5a" (rewrite-to-proof (one-td (inline 'fork) >>> smash))
+verify-lemma "6.5b" (rewrite-to-proof (one-td (inline 'fork) >>> smash))

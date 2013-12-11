@@ -1,0 +1,25 @@
+---------------------------
+-- Lemma 6.8 (right to left)
+--
+-- unzip . map (fork (f , g))  =>  fork (map f , map g)
+--
+--
+---------------------------
+
+-- unzip . map (fork (f , g))
+
+           { one-td (unfold 'unzip) }
+
+-- fork (map fst, map snd) . map (fork (f , g))
+
+           { lemma "6.6" }
+
+-- fork (map fst . map (fork (f , g)) , map snd . map (fork (f , g)))
+
+           { any-td (backward (lemma "map-fusion")) }
+
+-- fork (map (fst . fork (f , g)) , map (snd . fork (f , g)))
+
+           { one-td (forward (lemma "6.5a")) ; one-td (forward (lemma "6.5b")) }
+
+-- fork (map f , map g)

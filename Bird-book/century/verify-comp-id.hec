@@ -1,0 +1,14 @@
+---------------------------
+-- Verify comp-id
+--
+--
+-- comp-id-L:  forall f.   id . f  =  f
+-- comp-id-R:  forall f.   f . id  =  f
+--
+---------------------------
+
+rule-to-lemma "comp-id-L"
+rule-to-lemma "comp-id-R"
+
+verify-lemma "comp-id-L" (rewrite-to-proof smash)
+verify-lemma "comp-id-R" (rewrite-to-proof smash)

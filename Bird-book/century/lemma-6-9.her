@@ -1,0 +1,21 @@
+---------------------------
+-- Lemma 6.9 (right to left)
+--
+-- zip . fork (map f , map g)  =>  map (fork (f , g))
+--
+--
+---------------------------
+
+-- zip . fork (map f , map g)
+
+         { app-arg ; lemma "6.8" }
+
+-- zip . unzip . map (fork (f , g))
+
+         { backward (lemma "comp-assoc") ; [app-fun, app-arg] ; lemma "zip-unzip" }
+
+-- id . map (fork (f , g))
+
+         { lemma "comp-id-L" }
+
+-- map (fork (f , g))

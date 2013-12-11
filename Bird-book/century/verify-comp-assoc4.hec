@@ -1,0 +1,10 @@
+---------------------------
+-- Verify comp-assoc4
+--
+-- forall f g h k l.  f . g . h . k . l  = (f . g . h . k) . l
+--
+---------------------------
+
+rule-to-lemma "comp-assoc4"
+
+verify-lemma "comp-assoc4" (rewrite-both-sides-to-proof smash smash)

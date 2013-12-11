@@ -1,0 +1,15 @@
+---------------------------
+-- Verify map-id
+--
+-- map id = id
+--
+--
+---------------------------
+
+rule-to-lemma "map-id"
+
+load-and-run "verify-map-id-eta.hec"
+
+define-script "map-id-proof" "eta-expand 'xs ; { lam-body ; lemma "map-id-eta" } ; fold 'id"
+
+verify-lemma "map-id" (script-to-proof "map-id-proof")
