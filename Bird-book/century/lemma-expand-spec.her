@@ -16,7 +16,8 @@
 
   -- map (fork (id, value)) . filter (ok . value) . extend x
 
-       { [ app-fun, app-arg ] ; lemma "6.10" ; lemma "comp-assoc" }
+       { [ app-fun, app-arg ] ; lemma "6.10" }
+       { lemma "comp-assoc" }
 
   -- filter (ok . snd) . map (fork (id,value)) . extend x
 
@@ -26,7 +27,7 @@
 
           { [app-fun, app-arg]
             lemma "6.9"
-            one-td (lemma "map-id")
+            one-td (forward (lemma "map-id"))
           }
           { lemma "comp-assoc" }
 
@@ -37,12 +38,12 @@
       -- fork (id, map value) . extend x
 
             { lemma "6.6"
-              one-td (forward (lemma "comp-id"))
+              one-td (forward (lemma "comp-id-L"))
             }
 
       -- fork (extend x, (map value . extend x))
 
-            { [app-arg, app-arg] ; lemma "6.4" }
+            { [app-arg, app-arg] ; rule-unsafe "6.4" }
 
       -- fork (extend x, (modify x . map value))
 
