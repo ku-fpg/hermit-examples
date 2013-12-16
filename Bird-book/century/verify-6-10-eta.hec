@@ -1,0 +1,20 @@
+---------------------------
+-- Verify 6.10-eta
+--
+-- forall f g p xs.   map (fork (f,g)) (filter (p . g) xs)  =  filter (p . snd) (map (fork (f,g)) xs)
+--
+--
+---------------------------
+
+rule-to-lemma "6.10-eta"
+
+define-script "6.10-eta-nil-left"   "unfold 'map ; { case-expr ; unfold 'filter} ; smash"
+define-script "6.10-eta-nil-right"  "unfold 'filter ; one-td (unfold 'map) ; smash"
+
+-- We let bind to prevent "smash" unfolding basic combinators we want to keep folded.  TODO: make a more configurable bash/smash
+
+define-script "6.10-eta-cons-left"  "unfold 'map ; { case-expr ; arg 1 ; let-intro 'pg } ; innermost let-float ; { let-body ; { case-expr ; unfold 'filter } } ; smash ; let-subst ; one-bu (forward (lemma-unsafe 6.10-eta))" -- should invoke induction hypothesis here
+
+define-script "6.10-eta-cons-right" "{ arg 1 ; let-intro 'ps } ; innermost let-float ; { let-body ; one-td (unfold 'map) ; unfold 'filter ; smash } ; let-subst ; { case-expr ; one-td (unfold 'fork) ; smash }"
+
+verify-lemma "6.10-eta" (rewrite-to-proof (forward (lemma-unsafe "6.10-eta")))

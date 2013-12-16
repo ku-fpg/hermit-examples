@@ -1,6 +1,6 @@
 module Century where
 
-import Prelude hiding (zip,unzip,map,id)
+import Prelude hiding (zip,unzip,map,id,filter)
 
 data Datum
 type Data  = [Datum]
@@ -34,11 +34,11 @@ data Value
 {-# RULES "fork-fst-snd" [1]  fork (fst , snd)  =  id  #-}
 {-# RULES "zip-unzip"    [1]  zip . unzip  =  id       #-}
 
+{-# RULES "6.10"      [1] forall f g p.      map (fork (f,g)) . filter (p . g)     =  filter (p . snd) . map (fork (f,g))     #-}
+{-# RULES "6.10-eta"  [1] forall f g p xs.   map (fork (f,g)) (filter (p . g) xs)  =  filter (p . snd) (map (fork (f,g)) xs)  #-}
+
 {-# RULES "expand-spec"  [1] forall x. map (fork (id, value)) . extend' x = expand x . map (fork (id, value)) #-}
 
-
-
-{-# RULES "6.10"  [1] forall f g p.   map (fork (f,g)) . filter (p . g) = filter (p . snd) . map (fork (f,g))  #-}
 
 {-# RULES "6.2"  [1]           filter (good . value)          = filter (good . value) . filter (ok . value)           #-}
 {-# RULES "6.3"  [1] forall x. filter (ok . value) . extend x = filter (ok . value) . extend x . filter (ok . value)  #-}
@@ -95,6 +95,10 @@ id a = a
 map :: (a -> b) -> [a] -> [b]
 map _ []     = []
 map f (a:as) = f a : map f as
+
+filter :: (a -> Bool) -> [a] -> [a]
+filter p []     = []
+filter p (a:as) = if p a then a : filter p as else filter p as
 
 fork :: (a -> b, a -> c) -> a -> (b,c)
 fork (f,g) a = (f a, g a)
