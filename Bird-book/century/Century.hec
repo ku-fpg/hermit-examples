@@ -19,9 +19,9 @@ set-auto-corelint True
 
 { rhs-of 'solutions
 
-  -- filter (good . value) . candidates
+  -- filter (good . value) . expressions
 
-        { app-arg ; inline 'candidates }
+        { app-arg ; inline 'expressions }
 
   -- filter (good . value) . foldr extend []
 
@@ -44,7 +44,7 @@ set-auto-corelint True
 
 }
 
-{ rhs-of 'candidates2
+{ rhs-of 'expressions2
 
   -- map (fork (id,value)) . foldr extend' []
 
@@ -56,9 +56,9 @@ set-auto-corelint True
 
 { rhs-of 'solutions2
 
-  -- map fst . filter (good . snd) . candidates2
+  -- map fst . filter (good . snd) . expressions2
 
-        { one-td (inline 'candidates2) }
+        { one-td (inline 'expressions2) }
 
   -- map fst . filter (good . snd) . foldr expand []
 

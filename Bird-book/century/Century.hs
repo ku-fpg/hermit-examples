@@ -2,12 +2,7 @@ module Century where
 
 import Prelude hiding (zip,unzip,map,id,filter)
 
-data Datum
-type Data  = [Datum]
-
-data Candidate
-
-data Value
+import Data.List (intercalate)
 
 {-# RULES "comp-id-L"     [1] forall f.     id . f      = f              #-}
 {-# RULES "comp-id-R"     [1] forall f.     f . id      = f              #-}
@@ -49,43 +44,96 @@ data Value
 
 -------------------------------------------------
 
-solutions :: Data -> [Candidate]
-solutions = filter (good . value) . candidates
+type Expression = [Term]
+type Term       = [Factor]
+type Factor     = [Digit]
+type Digit      = Int
 
--- Assumption 6.1
-candidates :: Data -> [Candidate]
-candidates = foldr extend []
-
--------------------------------------------------
-
-solutions2 :: Data -> [Candidate]
-solutions2 = map fst . filter (good . snd) . candidates2
-
-candidates2 :: Data -> [(Candidate, Value)]
-candidates2 = map (fork (id, value)) . foldr extend' []
+type Value = (Int,Int,Int,Int)
 
 -------------------------------------------------
 
-value :: Candidate -> Value
-value = undefined
+c :: Int
+c = 100
 
 good :: Value -> Bool
-good = undefined
+good (k,f,t,e) = (f*t + e == c)
 
 ok :: Value -> Bool
-ok = undefined
+ok (k,f,t,e) = (f*t + e <= c)
 
-extend :: Datum -> [Candidate] -> [Candidate]
-extend = undefined
+-------------------------------------------------
 
-extend' :: Datum -> [Candidate] -> [Candidate]
+valExpr :: Expression -> Int
+valExpr = sum . map valTerm
+
+valTerm :: Term -> Int
+valTerm = product . map valFact
+
+valFact :: Factor -> Int
+valFact = foldl1 (\ n d -> 10 * n + d)
+
+-------------------------------------------------
+
+-- ds*fs + ts
+--
+-- ds is the digits of the leading factor
+-- fs is the tail of the factors of the leading term
+-- (ds*fs) is the leading term
+-- ts is the tail of the terms
+-- The first tuple component is the magnitude of any new digit that will be added to "ds".  E.g.  if ds = 777, then the first tuple component will be 1000.
+value :: Expression -> Value
+value ((ds:fs):ts) = (10^n, valFact ds, valTerm fs, valExpr ts)
+  where
+    n = length ds
+
+extend :: Digit -> [Expression] -> [Expression]
+extend x []  = [[[[x]]]]
+extend x es  = concatMap (glue x) es
+
+glue :: Digit -> Expression -> [Expression]
+glue x ((xs : xss) : xsss) = [((x:xs):xss):xsss,
+                              ([x]:xs:xss):xsss,
+                              [[x]]:(xs:xss):xsss]
+
+extend' :: Digit -> [Expression] -> [Expression]
 extend' x = filter (ok . value) . extend x
 
-expand :: Datum -> [(Candidate, Value)] -> [(Candidate, Value)]
+expand :: Digit -> [(Expression, Value)] -> [(Expression, Value)]
 expand x = filter (ok . snd) . zip . cross (extend x, modify x) . unzip
 
-modify :: Datum -> [Value] -> [Value]
-modify = undefined
+-- Note: error in the textbook on P39.
+-- The textbook states:
+-- modify x (k,f,t,e) = [(10*k,k*x+f,t,e),(10,x,f*t,e),(10,x,1,f*t+e)]
+-- which does not type check due to the absence of concatMap
+
+modify :: Digit -> [Value] -> [Value]
+modify d = concatMap (modify' d)
+
+modify' :: Digit -> Value -> [Value]
+modify' d (k,f,t,e) = [(10*k,k*d+f,t,e),(10,d,f*t,e),(10,d,1,f*t+e)]
+
+-- Given:  (ds * fs) + ts
+-- A digit "d" can be added as follows:
+--   dds * fs + ts
+--   (d * ds * fs) + ts
+--   d + (ds * fs) + ts
+
+-------------------------------------------------
+
+expressions :: [Digit] -> [Expression]
+expressions = foldr extend []
+
+solutions :: [Digit] -> [Expression]
+solutions = filter (good . value) . expressions
+
+-------------------------------------------------
+
+solutions2 :: [Digit] -> [Expression]
+solutions2 = map fst . filter (good . snd) . expressions2
+
+expressions2 :: [Digit] -> [(Expression, Value)]
+expressions2 = map (fork (id, value)) . foldr extend' []
 
 -------------------------------------------------
 
@@ -112,5 +160,19 @@ unzip = fork (map fst, map snd)
 zip :: ([a],[b]) -> [(a,b)]
 zip (a:as,b:bs) = (a,b) : zip (as,bs)
 zip (_,_)       = []
+
+-------------------------------------------------
+
+showExpr :: Expression -> String
+showExpr =  intercalate " + " . map showTerm
+
+showTerm :: Term -> String
+showTerm =  intercalate " * " . map showFactor
+
+showFactor :: Factor -> String
+showFactor =  concatMap show
+
+showDigit :: Digit -> String
+showDigit =  show
 
 -------------------------------------------------

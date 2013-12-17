@@ -43,7 +43,7 @@
 
       -- fork (extend x, (map value . extend x))
 
-            { [app-arg, app-arg] ; rule-unsafe "6.4" }
+            { [app-arg, app-arg] ; unfold-rule "6.4" }
 
       -- fork (extend x, (modify x . map value))
 
