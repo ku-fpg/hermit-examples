@@ -15,3 +15,51 @@ set-auto-corelint True
   load-and-run "verify-6-10.hec"
   load-and-run "verify-expand-spec.hec"
 }
+
+
+{ rhs-of 'solutions
+
+  -- filter (good . value) . candidates
+
+        { app-arg ; inline 'candidates }
+
+  -- filter (good . value) . foldr extend []
+
+        { [ app-fun, app-arg ] ; apply-rule "6.2" }
+        { lemma "comp-assoc" }
+
+  -- filter (good . value) . filter (ok . value) . foldr extend []
+
+        { app-arg
+
+          -- filter (ok . value) . foldr extend []
+
+              { unfold-rule "foldr-fusion1" }
+
+          -- foldr extend' []
+
+        }
+
+  -- filter (good . value) . foldr extend' []
+
+}
+
+{ rhs-of 'candidates2
+
+  -- map (fork (id,value)) . foldr extend' []
+
+        { apply-rule "foldr-fusion2" }
+
+  -- foldr expand []
+
+}
+
+{ rhs-of 'solutions2
+
+  -- map fst . filter (good . snd) . candidates2
+
+        { one-td (inline 'candidates2) }
+
+  -- map fst . filter (good . snd) . foldr expand []
+
+}
