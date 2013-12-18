@@ -9,6 +9,6 @@
 rule-to-lemma "map-id-eta"
 
 define-script "map-id-eta-nil"   "unfold 'map ; smash"
-define-script "map-id-eta-cons"  "unfold 'map ; case-reduce ; one-bu (forward (lemma-unsafe map-id-eta)) ; smash" -- should invoke induction hypothesis here
+define-script "map-id-eta-cons"  "unfold 'map ; smash ; { consider lam ; fold 'id } ; one-td (forward ind-hyp-0)"
 
 verify-lemma "map-id-eta" (inductive-proof 'xs [ '"[]" , ': ] [ map-id-eta-nil , map-id-eta-cons ] )
