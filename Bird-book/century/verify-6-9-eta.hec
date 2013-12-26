@@ -11,9 +11,9 @@
 
 rule-to-lemma "6.9-eta"
 
-define-script "6.9-eta-nil-left"   "unfold 'map ; smash"
-define-script "6.9-eta-nil-right"  " any-bu (inline [ 'zip , 'map ]) ; smash"
-define-script "6.9-eta-cons-left"  "unfold 'map ; one-bu (forward (lemma-unsafe 6.9-eta)) ; one-td (unfold 'fork) ; smash" -- should invoke induction hypothesis here
-define-script "6.9-eta-cons-right" "any-bu (inline ['zip , 'map]) ; smash"
+define-script "6.9-eta-nil-left"   "unfold 'map ; case-reduce"
+define-script "6.9-eta-nil-right"  "any-bu (inline [ 'zip , 'map ]) ; smash"
+define-script "6.9-eta-cons-left"  "unfold 'map ; case-reduce ; { app-arg ; ind-hyp-0 } ; one-td (unfold 'fork >>> case-reduce)"
+define-script "6.9-eta-cons-right" "any-bu (inline [ 'zip , 'map ]) ; smash"
 
 verify-lemma "6.9-eta" (inductive-proof-both-sides 'xs [ '"[]" , ': ] [ 6.9-eta-nil-left , 6.9-eta-cons-left ] [ 6.9-eta-nil-right , 6.9-eta-cons-right ] )

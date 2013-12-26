@@ -10,7 +10,7 @@ rule-to-lemma "map-fusion-eta"
 
 define-script "map-fusion-eta-nil-left"   "unfold 'map ; smash"
 define-script "map-fusion-eta-nil-right"  "any-bu (inline 'map) ; smash"
-define-script "map-fusion-eta-cons-left"  "unfold 'map ; case-reduce ; one-bu (forward (lemma-unsafe map-fusion-eta)) ; smash" -- should invoke induction hypothesis here
+define-script "map-fusion-eta-cons-left"  "unfold 'map ; case-reduce ; { app-arg ; ind-hyp-0 } ; smash"
 define-script "map-fusion-eta-cons-right" "any-bu (inline 'map) ; smash"
 
 verify-lemma "map-fusion-eta" (inductive-proof-both-sides 'xs [ '"[]" , ': ] [ map-fusion-eta-nil-left , map-fusion-eta-cons-left ] [ map-fusion-eta-nil-right , map-fusion-eta-cons-right ] )
