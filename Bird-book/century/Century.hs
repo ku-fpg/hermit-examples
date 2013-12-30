@@ -17,6 +17,8 @@ import Data.List (intercalate)
 {-# RULES "map-id"        [1]               map id      = id   #-}
 {-# RULES "map-id-eta"    [1] forall xs.    map id xs   = xs   #-}
 
+{-# RULES "map-strict"    [1] forall f.  map f undefined = undefined #-}
+
 {-# RULES "6.5a"  [1] forall f g.     fst . fork (f,g)     = f                             #-}
 {-# RULES "6.5b"  [1] forall f g.     snd . fork (f,g)     = g                             #-}
 {-# RULES "6.6"   [1] forall f g h.   fork (f,g) . h       = fork (f . h, g . h)           #-}
@@ -146,7 +148,8 @@ map f (a:as) = f a : map f as
 
 filter :: (a -> Bool) -> [a] -> [a]
 filter p []     = []
-filter p (a:as) = if p a then a : filter p as else filter p as
+filter p (a:as) = let bs = filter p as
+                   in if p a then a : bs else bs
 
 fork :: (a -> b, a -> c) -> a -> (b,c)
 fork (f,g) a = (f a, g a)

@@ -1,0 +1,61 @@
+---------------------------
+-- Lemma 6.10-eta (cons case, right)
+--
+-- forall f g p x xs.
+--
+--     filter (p . snd) (map (fork (f,g)) (x:xs))
+--  =>
+--     case p (g x) of
+--       False -> map (fork (f,g)) (filter (p . g) xs)
+--       True  -> fork (f,g) x : map (fork (f,g)) (filter (p . g) xs)
+---------------------------
+
+-- filter (p . snd) (map (fork (f,g)) (x:xs))
+
+         { app-arg
+
+             -- map (fork (f,g)) (x:xs)
+
+                   { unfold 'map ; case-reduce }
+
+             -- fork (f,g) x : map (fork (f,g)) xs
+
+         }
+
+-- filter (p . snd) (fork (f,g) x : map (fork (f,g)) xs)
+
+         { unfold 'filter ; case-reduce }
+
+-- let bs = filter (p . snd) (map (fork (f,g) xs))
+-- in case (p . snd) (fork (f,g) x) of
+--      False -> bs
+--      True  -> fork (f,g) x : bs
+
+         { let-bind ; nonrec-rhs
+
+           -- filter (p . snd) (map (fork (f,g) xs))
+
+                 { backward ind-hyp-0 }
+
+           -- map (fork (f,g)) (filter (p . g) xs)
+
+         }
+
+-- let bs = map (fork (f,g)) (filter (p . g) xs)
+-- in case (p . snd) (fork (f,g) x) of
+--      False -> bs
+--      True  -> fork (f,g) x : bs
+
+         { let-subst }
+
+-- case (p . snd) (fork (f,g) x) of
+--   False -> map (fork (f,g)) (filter (p . g) xs)
+--   True  -> fork (f,g) x : map (fork (f,g)) (filter (p . g) xs)
+
+         { case-expr ; smash-extended-with [ inline 'fork ] }
+
+-- case p (g x) of
+--   False -> map (fork (f,g)) (filter (p . g) xs)
+--   True  -> fork (f,g) x : map (fork (f,g)) (filter (p . g) xs)
+
+

@@ -6,6 +6,7 @@ set-auto-corelint True
   load-and-run "verify-comp-assoc4.hec"
   load-and-run "verify-map-fusion.hec"
   load-and-run "verify-map-id.hec"
+  load-and-run "verify-map-strict.hec"
   load-and-run "verify-6-5.hec"
   load-and-run "verify-6-6.hec"
   load-and-run "verify-6-7.hec"

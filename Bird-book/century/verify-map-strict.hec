@@ -1,0 +1,11 @@
+---------------------------
+-- Verify map-strict
+--
+-- map f undefined = undefined
+--
+--
+---------------------------
+
+rule-to-lemma "map-strict"
+
+verify-lemma "map-strict" (rewrite-to-proof (unfold 'map >>> undefined-expr))
