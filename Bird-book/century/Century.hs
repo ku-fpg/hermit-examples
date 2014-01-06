@@ -4,6 +4,8 @@ import Prelude hiding (zip,unzip,map,id,filter)
 
 import Data.List (intercalate)
 
+-------------------------------------------------
+
 {-# RULES "comp-id-L"     [1] forall f.     id . f      = f              #-}
 {-# RULES "comp-id-R"     [1] forall f.     f . id      = f              #-}
 {-# RULES "comp-assoc"    [1] forall f g h. (f . g) . h = f . (g . h)    #-}
