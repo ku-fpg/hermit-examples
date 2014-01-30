@@ -4,7 +4,7 @@
 -- forall f g xs.   map (fork (f , g)) xs  =  zip (map f xs , map g xs)
 --
 --   Rewrite both sides of the inductive cases:
---       undefined case: undefined  =  (undefined , undefined)
+--       undefined case: undefined
 --       nil case:  []
 --       cons case:  (f y , g y) : zip (map f ys , map g ys)
 --
