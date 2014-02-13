@@ -1,0 +1,4 @@
+hermit Century.hs Century.hec -opt=HERMIT.Dictionary.CenturyPlugin
+
+back
+show-lemmas
