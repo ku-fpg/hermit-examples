@@ -1,6 +1,6 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 
-module CenturyPlugin (plugin) where
+module HERMIT.Dictionary.CenturyPlugin (plugin) where
 
 import HERMIT.ParserCore (parse5beforeBiR)
 import HERMIT.External
