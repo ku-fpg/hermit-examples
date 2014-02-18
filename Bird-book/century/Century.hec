@@ -36,6 +36,8 @@ set-auto-corelint True
           -- filter (ok . value) . foldr extend []
 
               { unfold-rule "foldr-fusion1" }
+-----------   { foldr-fusion-unsafe [| filter Expression ((.) Value Bool Expression ok value |] [| extend |] [| extend' |] [| [] Expression |] [| [] Expression |] }
+
 
           -- foldr extend' []
 

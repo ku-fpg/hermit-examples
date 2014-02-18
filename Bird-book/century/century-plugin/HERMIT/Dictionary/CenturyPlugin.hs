@@ -11,8 +11,8 @@ import HERMIT.External
 import HERMIT.GHC
 import HERMIT.Kure
 import HERMIT.Monad
-import HERMIT.Optimize
 import HERMIT.ParserCore (parse5beforeBiR)
+import HERMIT.Plugin
 import HERMIT.Utilities
 
 import HERMIT.Dictionary.Common
@@ -22,16 +22,18 @@ import HERMIT.Dictionary.Undefined (verifyStrictT)
 -------------------------------------------------
 
 plugin :: Plugin
-plugin = optimize (interactive exts)
+plugin = hermitPlugin (interactive exts)
 
 exts :: [External]
 exts =
     [ external "foldr-fusion" ((\ f g h a b r1 r2 r3 -> foldrFusion (Just (r1,r2,r3)) f g h a b) :: CoreString -> CoreString -> CoreString -> CoreString -> CoreString -> RewriteH Core -> RewriteH Core -> RewriteH Core -> BiRewriteH Core)
-      [ "Given proofs that: (i) f is strict, (ii) f a = b, (iii) f (g x y) = h x (f y), then",
+      [ "Given [| f |] [| g |] [| h |] [| a |] [| b |] as arguments, and",
+        "given proofs that: (i) f is strict, (ii) f a = b, (iii) f (g x y) = h x (f y), then",
         "f . foldr g a  <=>  foldr h b"
       ]
     , external "foldr-fusion-unsafe" (foldrFusion Nothing :: CoreString -> CoreString -> CoreString -> CoreString -> CoreString -> BiRewriteH Core)
-      [ "f . foldr g a  <=>  foldr h b",
+      [ "Given [| f |] [| g |] [| h |] [| a |] [| b |] as arguments, then",
+        "f . foldr g a  <=>  foldr h b",
         "The following three preconditions are assumed to hold:",
         "(i) f is strict, (ii) f a = b, (iii) f (g x y) = h x (f y)"
       ]
