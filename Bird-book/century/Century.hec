@@ -66,3 +66,9 @@ set-auto-corelint True
   -- map fst . filter (good . snd) . foldr expand []
 
 }
+
+{ rhs-of 'expand
+
+  load-and-run "expand-simplify.her"
+
+}

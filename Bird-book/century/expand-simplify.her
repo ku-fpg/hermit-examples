@@ -1,0 +1,47 @@
+-- \ x -> filter (ok . snd) . zip . cross (extend x, modify x) . unzip
+
+{ lam-body
+
+  -- filter (ok . snd) . zip . cross (extend x, modify x) . unzip
+
+        { eta-expand 'evs ; lam-body
+
+          -- (filter (ok . snd) . zip . cross (extend x, modify x) . unzip) evs
+
+                { arg 3 ; app-arg
+
+                  -- ok . snd
+
+                  let-intro 'okPred
+
+                  -- let okPred = ok . snd
+                  --  in okPred
+
+                }
+
+          -- (filter (let okPred = ok . snd in okPred) . zip . cross (extend x, modify x) . unzip) evs
+
+          any-bu let-float
+
+          -- let okPred = ok . snd
+          --  in (filter okPred . zip . cross (extend x, modify x) . unzip) evs
+
+          { let-body
+
+            -- (filter okPred . zip . cross (extend x, modify x) . unzip) evs
+
+                  { smash }
+
+            -- filter okPred (zip (cross (extend x, modify x)) (unzip evs)))
+
+                  { one-td (unfold 'unzip) ; one-td (unfold 'fork >>> case-reduce) ; one-td (unfold 'cross) ; any-bu case-reduce }
+
+            -- filter okPred (zip (extend (map fst evs) , modify x (map snd evs)))
+
+          }
+
+   -- TODO : Unfinished
+
+        }
+
+}
