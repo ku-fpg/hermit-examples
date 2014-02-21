@@ -1,0 +1,11 @@
+---------------------------
+-- Verify filter-strict
+--
+-- filter f undefined = undefined
+--
+--
+---------------------------
+
+rule-to-lemma "filter-strict"
+
+verify-lemma "filter-strict" (rewrite-to-proof (unfold 'filter >>> undefined-expr))

@@ -19,7 +19,8 @@ import Data.List (intercalate)
 {-# RULES "map-id"        [1]               map id      = id   #-}
 {-# RULES "map-id-eta"    [1] forall xs.    map id xs   = xs   #-}
 
-{-# RULES "map-strict"    [1] forall f.  map f undefined = undefined #-}
+{-# RULES "map-strict"    [1] forall f.  map f undefined    = undefined  #-}
+{-# RULES "filter-strict" [1] forall p.  filter p undefined = undefined  #-}
 
 {-# RULES "6.5a"  [1] forall f g.     fst . fork (f,g)     = f                             #-}
 {-# RULES "6.5b"  [1] forall f g.     snd . fork (f,g)     = g                             #-}
