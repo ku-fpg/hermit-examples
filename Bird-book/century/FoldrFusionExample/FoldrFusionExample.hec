@@ -1,4 +1,4 @@
--- hermit FoldExample.hs -opt=HERMIT.Dictionary.CenturyPlugin +FoldExample FoldExample.hec
+-- hermit FoldrFusionExample.hs -opt=HERMIT.Dictionary.CenturyPlugin +FoldrFusionExample FoldrFusionExample.hec
 
 set-auto-corelint True
 

@@ -1,4 +1,4 @@
-module FoldExample where
+module FoldrFusionExample where
 
 -- | foldr fusion
 --
