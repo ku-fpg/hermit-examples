@@ -1,0 +1,37 @@
+-- hermit FoldExample.hs -opt=HERMIT.Dictionary.CenturyPlugin +FoldExample FoldExample.hec
+
+set-auto-corelint True
+
+{ prog-end
+
+  rule-to-lemma "Fusion Condition 1"
+  rule-to-lemma "Fusion Condition 2"
+  rule-to-lemma "Fusion Condition 3"
+
+  define-script "fusion_cond_1_proof" "unfold 'f ; undefined-case"
+  verify-lemma "Fusion Condition 1" (script-to-proof "fusion_cond_1_proof")
+
+  define-script "fusion_cond_2_proof" "{ app-arg ; inline } ; unfold 'f ; case-reduce ; fold 'b"
+  verify-lemma "Fusion Condition 2" (script-to-proof "fusion_cond_2_proof")
+
+  define-script "fusion_cond_3_proof_lhs" "{ app-arg ; unfold 'g } ; unfold 'f ; case-float-case ; one-td case-reduce"
+  define-script "fusion_cond_3_proof_rhs" "{ app-arg ; unfold 'f } ; unfold 'h"
+  verify-lemma "Fusion Condition 3" (script-both-sides-to-proof "fusion_cond_3_proof_lhs" "fusion_cond_3_proof_rhs")
+
+  define-rewrite "fusion-forward-example" "forward (foldr-fusion [| f |] [| g |] [| h |] [| a |] [| b |] (forward (lemma \"Fusion Condition 1\")) (forward (lemma \"Fusion Condition 2\")) (forward (lemma \"Fusion Condition 3\")))"
+
+  define-rewrite "fusion-backward-example" "backward (foldr-fusion [| f |] [| g |] [| h |] [| a |] [| b |] (forward (lemma \"Fusion Condition 1\")) (forward (lemma \"Fusion Condition 2\")) (forward (lemma \"Fusion Condition 3\")))"
+
+}
+
+flatten-module
+{
+  rhs-of 'lr
+  fusion-forward-example
+  fusion-backward-example
+}
+{
+  rhs-of 'rl
+  fusion-backward-example
+  fusion-forward-example
+}

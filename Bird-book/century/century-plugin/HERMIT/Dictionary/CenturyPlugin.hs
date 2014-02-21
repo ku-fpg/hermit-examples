@@ -109,9 +109,8 @@ foldrFusionR mp f g h a b = beforeBiR
 
 -------------------------------------------------
 
--- TODO: check this
 foldrLocation :: String
-foldrLocation = "Data.List.foldr"
+foldrLocation = "foldr" -- Data.List.foldr
 
 -- TODO: will crash if 'foldr' is not used (or explicitly imported) in the source file.
 findFoldrIdT :: (BoundVars c, HasGlobalRdrEnv c, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m a Id
@@ -127,9 +126,8 @@ isFoldrValT = prefixFailMsg "not a foldr expression fully saturated with type ar
 
 -------------------------------------------------
 
--- TODO: check this
 compLocation :: String
-compLocation = "Data.Function.(.)"
+compLocation = "." -- Data.Function.(.)
 
 -- TODO: will crash if '(.)' is not used (or explicitly imported) in the source file.
 findCompIdT :: (BoundVars c, HasGlobalRdrEnv c, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m a Id
