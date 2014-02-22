@@ -1,0 +1,24 @@
+---------------------------
+-- Verify foldr-fusion-2
+--
+--   map (fork (id, value)) . foldr extend' []  =  foldr expand []
+--
+-- Preconditions:
+--   foldr-fusion-2-cond-i    map (fork (id, value)) undefined  =  undefined
+--   foldr-fusion-2-cond-ii   map (fork (id, value)) []         =  []
+--   foldr-fusion-2-cond-iii  forall x y.  map (fork (id, value)) (extend' x y)  =  expand x (map (fork (id, value)) y)
+--
+---------------------------
+
+rule-to-lemma "foldr-fusion-2-cond-i"
+rule-to-lemma "foldr-fusion-2-cond-ii"
+rule-to-lemma "foldr-fusion-2-cond-iii"
+rule-to-lemma "foldr-fusion-2"
+
+verify-lemma "foldr-fusion-2-cond-i" (rewrite-to-proof (forward (lemma "map-strict")))
+verify-lemma "foldr-fusion-2-cond-ii" (rewrite-to-proof (unfold 'map >>> case-reduce))
+load "lemma-foldr-fusion-2-cond-iii" "lemma-foldr-fusion-2-cond-iii.her"
+verify-lemma "foldr-fusion-2-cond-iii" (script-to-proof "lemma-foldr-fusion-2-cond-iii")
+
+verify-lemma "foldr-fusion-2" (rewrite-to-proof (forward (lemma-unsafe "foldr-fusion-2")))
+-- TODO: use foldr-fusion command when Core Parser works

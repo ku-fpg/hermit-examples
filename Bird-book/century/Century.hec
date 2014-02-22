@@ -15,8 +15,8 @@ set-auto-corelint True
   load-and-run "verify-6-9.hec"
   load-and-run "verify-zip-unzip.hec"
   load-and-run "verify-6-10.hec"
-  load-and-run "verify-expand-spec.hec"
   load-and-run "verify-foldr-fusion-1.hec"
+  load-and-run "verify-foldr-fusion-2.hec"
 }
 
 
@@ -51,7 +51,7 @@ set-auto-corelint True
 
   -- map (fork (id,value)) . foldr extend' []
 
-        { apply-rule "foldr-fusion-2" }
+        { lemma "foldr-fusion-2" }
 
   -- foldr expand []
 
