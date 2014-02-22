@@ -69,6 +69,6 @@ set-auto-corelint True
 
 { rhs-of 'expand
 
-  load-and-run "expand-simplify.her"
+-- TODO  load-and-run "expand-simplify.her"
 
 }
