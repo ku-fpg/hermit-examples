@@ -1,0 +1,37 @@
+-------------------------------------------------------------
+--
+-- Foldr-Fusion-1 Precondition-iii
+--
+-- forall x y.
+--
+--    filter (ok . value) (extend x y)
+-- =>
+--    extend' x (filter (ok . value) y)
+
+-------------------------------------------------------------
+
+-- filter (ok . value) (extend x y)
+
+      { fold '. }
+
+-- (filter (ok . value) . extend x) y
+
+      { app-fun
+
+        -- filter (ok . value) . extend x
+
+              { rule-unsafe "6.3" ; backward (lemma (comp-assoc)) }
+
+        -- (filter (ok . value) . extend x) . filter (ok . value)
+
+              { arg 3 ; fold 'extend' }
+
+        -- extend' x . filter (ok . value)
+
+      }
+
+-- (extend' x . filter (ok . value)) y
+
+      { unfold '. }
+
+-- extend' x (filter (ok . value) y)

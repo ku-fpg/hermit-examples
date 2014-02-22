@@ -1,0 +1,26 @@
+---------------------------
+-- Verify foldr-fusion-1
+--
+--   filter (ok . value) . foldr extend  []  =  foldr extend' []
+--
+-- Preconditions:
+--   foldr-fusion-1-cond-i    filter (ok . value) undefined  =  undefined
+--   foldr-fusion-1-cond-ii   filter (ok . value) []         =  []
+--   foldr-fusion-1-cond-iii  forall x y.  filter (ok . value) (extend x y)  =  extend' x (filter (ok . value) y)
+--
+---------------------------
+
+rule-to-lemma "foldr-fusion-1-cond-i"
+rule-to-lemma "foldr-fusion-1-cond-ii"
+rule-to-lemma "foldr-fusion-1-cond-iii"
+rule-to-lemma "foldr-fusion-1"
+
+verify-lemma "foldr-fusion-1-cond-i" (rewrite-to-proof (forward (lemma "filter-strict")))
+verify-lemma "foldr-fusion-1-cond-ii" (rewrite-to-proof (unfold 'filter >>> case-reduce))
+load "lemma-foldr-fusion-1-cond-iii" "lemma-foldr-fusion-1-cond-iii.her"
+verify-lemma "foldr-fusion-1-cond-iii" (script-to-proof "lemma-foldr-fusion-1-cond-iii")
+
+verify-lemma "foldr-fusion-1" (rewrite-to-proof (forward (lemma-unsafe "foldr-fusion-1")))
+-- TODO: use foldr-fusion command when Core Parser works
+--- foldr-fusion-unsafe [| filter Expression ((.) Value Bool Expression ok value |] [| extend |] [| extend' |] [| [] Expression |] [| [] Expression |]
+----------------- (forward (lemma foldr-fusion-1-cond-i)) (forward (lemma foldr-fusion-1-cond-ii)) (forward (lemma foldr-fusion-1-cond-iii))

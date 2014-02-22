@@ -16,6 +16,7 @@ set-auto-corelint True
   load-and-run "verify-zip-unzip.hec"
   load-and-run "verify-6-10.hec"
   load-and-run "verify-expand-spec.hec"
+  load-and-run "verify-foldr-fusion-1.hec"
 }
 
 
@@ -36,9 +37,7 @@ set-auto-corelint True
 
           -- filter (ok . value) . foldr extend []
 
-              { unfold-rule "foldr-fusion1" }
------------   { foldr-fusion-unsafe [| filter Expression ((.) Value Bool Expression ok value |] [| extend |] [| extend' |] [| [] Expression |] [| [] Expression |] }
-
+              { lemma "foldr-fusion-1" }
 
           -- foldr extend' []
 
@@ -52,7 +51,7 @@ set-auto-corelint True
 
   -- map (fork (id,value)) . foldr extend' []
 
-        { apply-rule "foldr-fusion2" }
+        { apply-rule "foldr-fusion-2" }
 
   -- foldr expand []
 

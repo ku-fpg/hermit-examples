@@ -39,13 +39,18 @@ import Data.List (intercalate)
 
 {-# RULES "expand-spec"  [1] forall x. map (fork (id, value)) . extend' x = expand x . map (fork (id, value)) #-}
 
+{-# RULES "foldr-fusion-1-cond-i"    [1]  filter (ok . value) undefined  =  undefined  #-}
+{-# RULES "foldr-fusion-1-cond-ii"   [1]  filter (ok . value) []         =  []         #-}
+{-# RULES "foldr-fusion-1-cond-iii"  [1]  forall x y.  filter (ok . value) (extend x y)  =  extend' x (filter (ok . value) y)  #-}
+
+
 
 {-# RULES "6.2"  [1]           filter (good . value)          = filter (good . value) . filter (ok . value)           #-}
 {-# RULES "6.3"  [1] forall x. filter (ok . value) . extend x = filter (ok . value) . extend x . filter (ok . value)  #-}
 {-# RULES "6.4"  [1] forall x. map value . extend x           = modify x . map value                                  #-}
 
-{-# RULES "foldr-fusion1" [1] filter (ok . value)    . foldr extend  [] = foldr extend' []  #-}
-{-# RULES "foldr-fusion2" [1] map (fork (id, value)) . foldr extend' [] = foldr expand []   #-}
+{-# RULES "foldr-fusion-1" [1] filter (ok . value)    . foldr extend  [] = foldr extend' []  #-}
+{-# RULES "foldr-fusion-2" [1] map (fork (id, value)) . foldr extend' [] = foldr expand []   #-}
 
 -------------------------------------------------
 
