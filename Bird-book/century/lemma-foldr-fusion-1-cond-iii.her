@@ -20,7 +20,7 @@
 
         -- filter (ok . value) . extend x
 
-              { rule-unsafe "6.3" ; backward (lemma (comp-assoc)) }
+              { unfold-rule "6.3" ; backward (lemma (comp-assoc)) } -- TODO: cheating
 
         -- (filter (ok . value) . extend x) . filter (ok . value)
 
