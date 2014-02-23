@@ -7,6 +7,7 @@ set-auto-corelint True
   rule-to-lemma "Fusion Condition 1"
   rule-to-lemma "Fusion Condition 2"
   rule-to-lemma "Fusion Condition 3"
+  rule-to-lemma "Foldr Fusion Example"
 
   define-script "fusion_cond_1_proof" "unfold 'f ; undefined-case"
   verify-lemma "Fusion Condition 1" (script-to-proof "fusion_cond_1_proof")
@@ -18,20 +19,18 @@ set-auto-corelint True
   define-script "fusion_cond_3_proof_rhs" "{ app-arg ; unfold 'f } ; unfold 'h"
   verify-lemma "Fusion Condition 3" (script-both-sides-to-proof "fusion_cond_3_proof_lhs" "fusion_cond_3_proof_rhs")
 
-  define-rewrite "fusion-forward-example" "forward (foldr-fusion [| f |] [| g |] [| h |] [| a |] [| b |] (forward (lemma \"Fusion Condition 1\")) (forward (lemma \"Fusion Condition 2\")) (forward (lemma \"Fusion Condition 3\")))"
-
-  define-rewrite "fusion-backward-example" "backward (foldr-fusion [| f |] [| g |] [| h |] [| a |] [| b |] (forward (lemma \"Fusion Condition 1\")) (forward (lemma \"Fusion Condition 2\")) (forward (lemma \"Fusion Condition 3\")))"
+  verify-lemma "Foldr Fusion Example" (foldr-fusion-proof (forward (lemma "Fusion Condition 1")) (forward (lemma "Fusion Condition 2")) (forward (lemma "Fusion Condition 3")))
 
 }
 
 flatten-module
 {
   rhs-of 'lr
-  fusion-forward-example
-  fusion-backward-example
+  lemma "Foldr Fusion Example"
+  backward (lemma "Foldr Fusion Example")
 }
 {
   rhs-of 'rl
-  fusion-backward-example
-  fusion-forward-example
+  backward (lemma "Foldr Fusion Example")
+  lemma "Foldr Fusion Example"
 }

@@ -45,10 +45,10 @@ import Data.List (intercalate)
 {-# RULES "foldr-fusion-2-cond-ii"   [1]  map (fork (id, value)) []         =  []         #-}
 {-# RULES "foldr-fusion-2-cond-iii"  [1]  forall x y.  map (fork (id, value)) (extend' x y)  =  expand x (map (fork (id, value)) y)  #-}
 
-
-
 {-# RULES "foldr-fusion-1" [1] filter (ok . value)    . foldr extend  [] = foldr extend' []  #-}
 {-# RULES "foldr-fusion-2" [1] map (fork (id, value)) . foldr extend' [] = foldr expand []   #-}
+
+
 
 {-# RULES "6.2"  [1]           filter (good . value)          = filter (good . value) . filter (ok . value)           #-}
 {-# RULES "6.3"  [1] forall x. filter (ok . value) . extend x = filter (ok . value) . extend x . filter (ok . value)  #-}

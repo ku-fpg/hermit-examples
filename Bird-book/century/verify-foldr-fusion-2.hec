@@ -20,7 +20,4 @@ verify-lemma "foldr-fusion-2-cond-ii" (rewrite-to-proof (unfold 'map >>> case-re
 load "lemma-foldr-fusion-2-cond-iii" "lemma-foldr-fusion-2-cond-iii.her"
 verify-lemma "foldr-fusion-2-cond-iii" (script-to-proof "lemma-foldr-fusion-2-cond-iii")
 
-verify-lemma "foldr-fusion-2" (rewrite-to-proof (unfold-rule "foldr-fusion-2"))
--- TODO: use foldr-fusion command when Core Parser works
---- foldr-fusion-unsafe [| map (fork (, id value)) |] [| extend' |] [|  |] [| [] Expression |] [| [] Expression |]
------------------ (forward (lemma foldr-fusion-2-cond-i)) (forward (lemma foldr-fusion-2-cond-ii)) (forward (lemma foldr-fusion-2-cond-iii))
+verify-lemma "foldr-fusion-2" (foldr-fusion-proof (forward (lemma foldr-fusion-2-cond-i)) (forward (lemma foldr-fusion-2-cond-ii)) (forward (lemma foldr-fusion-2-cond-iii)))

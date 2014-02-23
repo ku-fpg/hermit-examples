@@ -1,8 +1,5 @@
-{-# LANGUAGE ScopedTypeVariables #-}
-
 module HERMIT.Dictionary.CenturyPlugin (plugin) where
 
-import Control.Applicative ((<$>))
 import Control.Arrow ((<<<))
 
 import HERMIT.Context
@@ -11,13 +8,13 @@ import HERMIT.External
 import HERMIT.GHC
 import HERMIT.Kure
 import HERMIT.Monad
-import HERMIT.ParserCore (parse5beforeBiR)
 import HERMIT.Plugin
-import HERMIT.Utilities
 
 import HERMIT.Dictionary.Common
-import HERMIT.Dictionary.Reasoning (verifyEqualityLeftToRightT)
+import HERMIT.Dictionary.Reasoning
 import HERMIT.Dictionary.Undefined (verifyStrictT)
+
+import HERMIT.Shell.Proof
 
 -------------------------------------------------
 
@@ -26,86 +23,56 @@ plugin = hermitPlugin (interactive exts)
 
 exts :: [External]
 exts =
-    [ external "foldr-fusion" ((\ f g h a b r1 r2 r3 -> foldrFusion (Just (r1,r2,r3)) f g h a b) :: CoreString -> CoreString -> CoreString -> CoreString -> CoreString -> RewriteH Core -> RewriteH Core -> RewriteH Core -> BiRewriteH Core)
-      [ "Given [| f |] [| g |] [| h |] [| a |] [| b |] as arguments, and",
-        "given proofs that: (i) f is strict, (ii) f a = b, (iii) f (g x y) = h x (f y), then",
-        "f . foldr g a  <=>  foldr h b"
-      ]
-    , external "foldr-fusion-unsafe" (foldrFusion Nothing :: CoreString -> CoreString -> CoreString -> CoreString -> CoreString -> BiRewriteH Core)
-      [ "Given [| f |] [| g |] [| h |] [| a |] [| b |] as arguments, then",
-        "f . foldr g a  <=>  foldr h b",
-        "The following three preconditions are assumed to hold:",
-        "(i) f is strict, (ii) f a = b, (iii) f (g x y) = h x (f y)"
+    [ external "foldr-fusion-proof" foldrFusionProof
+      [ "Given rewrites proving that: (i) f is strict, (ii) f a = b, (iii) f (g x y) = h x (f y), then",
+        "f . foldr g a  ==  foldr h b"
       ]
     ]
 
 -------------------------------------------------
 
-foldrFusion :: Maybe (RewriteH Core, RewriteH Core, RewriteH Core) -> CoreString -> CoreString -> CoreString -> CoreString -> CoreString -> BiRewriteH Core
-foldrFusion mp f g h a b = promoteExprBiR $ parse5beforeBiR (foldrFusionR $ fmap (\ (r1,r2,r3) -> (extractR r1, extractR r2, extractR r3)) mp) f g h a b
+foldrFusionProof :: RewriteH Core -> RewriteH Core -> RewriteH Core -> ProofH
+foldrFusionProof r1 r2 r3 = foldrFusionProofR (extractR r1) (extractR r2) (extractR r3)
 
 -- | foldr fusion
+--
+-- f :: A -> B
+-- g :: C -> A -> A
+-- h :: C -> B -> B
+-- a :: A
+-- b :: B
 --
 -- strict f    /\    f a = b    /\    forall x y. f (g x y) = h x (f y)
 -----------------------------------------------------------------------
 --           f . foldr g a = foldr h b
 --
-foldrFusionR :: forall c. (BoundVars c, HasGlobalRdrEnv c)
-             => Maybe (Rewrite c HermitM CoreExpr, Rewrite c HermitM CoreExpr, Rewrite c HermitM CoreExpr)
-             -> CoreExpr -- f :: A -> B
-             -> CoreExpr -- g :: C -> A -> A
-             -> CoreExpr -- h :: C -> B -> B
-             -> CoreExpr -- a :: A
-             -> CoreExpr -- b :: B
-             -> BiRewrite c HermitM CoreExpr
-foldrFusionR mp f g h a b = beforeBiR
-                              (do
-                                  tyA         <- exprTypeM a
-                                  tyB         <- exprTypeM b
-                                  (tyA',tyB') <- funExprArgResTypes f
-                                  (tyC,tyAA)  <- funExprArgResTypes g
-                                  (tyC',tyBB) <- funExprArgResTypes h
-                                  tyA''       <- endoFunType tyAA
-                                  tyB''       <- endoFunType tyBB
-                                  guardMsg (equivalentBy eqType [tyA,tyA',tyA'']) "type mismatch (A)"
-                                  guardMsg (equivalentBy eqType [tyB,tyB',tyB'']) "type mismatch (B)"
-                                  guardMsg (eqType tyC tyC') "type mismatch (C)"
-                                  case mp of
-                                    Nothing                    -> return ()
-                                    Just (fstrict,pbase,pstep) -> do x <- constT (Var <$> newIdH "x" tyC)
-                                                                     y <- constT (Var <$> newIdH "y" tyA)
-                                                                     verifyStrictT f fstrict
-                                                                     verifyEqualityLeftToRightT (App f a) b pbase
-                                                                     verifyEqualityLeftToRightT (App f (App (App g x) y))
-                                                                                                (App (App h x) (App f y))
-                                                                                                pstep
-                                  return (tyA,tyB,tyC)
-                              )
-                              (\ tys -> bidirectional (ffL tys) (ffR tys))
-  where
-    ffL :: (Type,Type,Type) -> Rewrite c HermitM CoreExpr
-    ffL (_,tyB,tyC) =
-          do App (App compE f') (App (App foldrElhs g') a') <- idR
-             guardMsg (exprAlphaEq f f' && exprAlphaEq g g' && exprAlphaEq a a') "Given functions do not match current expression."
-             isCompValT  <<< return compE
-             isFoldrValT <<< return foldrElhs
-             foldrId <- findFoldrIdT
-             let foldrErhs = mkCoreApps (Var foldrId) [Type tyC, Type tyB]
-             return $ mkCoreApps foldrErhs [h,b]
+foldrFusionProofR :: RewriteH CoreExpr -> RewriteH CoreExpr -> RewriteH CoreExpr -> ProofH
+foldrFusionProofR fstrict pbase pstep = userProofTechnique $ prefixFailMsg "foldr-fusion-proof failed: " $
+  do CoreExprEquality vs lhs rhs <- idR
 
-    ffR :: (Type,Type,Type) -> Rewrite c HermitM CoreExpr
-    ffR (tyA,tyB,tyC) =
-          do App (App foldrErhs h') b' <- idR
-             guardMsg (exprAlphaEq h h' && exprAlphaEq b b') "Given functions do not match current expression."
-             isFoldrValT <<< return foldrErhs
-             compId    <- findCompIdT
-             let compE = mkCoreApps (Var compId) [Type tyA, Type tyB, Type (mkListTy tyC)]
-             foldrId <- findFoldrIdT
-             let foldrElhs = mkCoreApps (Var foldrId) [Type tyC, Type tyA]
-             return $ mkCoreApps compE [f, mkCoreApps foldrElhs [g,a] ]
+     withPatFailMsg "Lemma does not have the form:  f . foldr g a = foldr h b" $
+       do App (App compE f) (App (App foldrElhs g) a) <- return lhs
+          App (App foldrErhs h) b                     <- return rhs
 
--- (.) :: (Y Z X   :: *) -> (Y -> Z) -> (X   -> Y) -> X   -> Z
--- (.) :: (A B [C] :: *) -> (A -> B) -> ([C] -> A) -> [C] -> B
+          isCompValT  <<< return compE
+          isFoldrValT <<< return foldrElhs
+          isFoldrValT <<< return foldrErhs
+
+          tyA      <- exprTypeM a
+          (tyC,_)  <- funExprArgResTypes g
+
+          v_x <- constT (newIdH "x" tyC)
+          v_y <- constT (newIdH "y" tyA)
+
+          let withScope = withVarsInScope (vs ++ [v_x,v_y])
+              x = Var v_x
+              y = Var v_y
+
+          prefixFailMsg "precondition (i) failed: "   $ verifyStrictT f (withScope fstrict)
+          prefixFailMsg "precondition (ii) failed: "  $ verifyEqualityLeftToRightT (App f a) b (withScope pbase)
+          prefixFailMsg "precondition (iii) failed: " $ verifyEqualityLeftToRightT (App f (App (App g x) y))
+                                                                                   (App (App h x) (App f y))
+                                                                                   (withScope pstep)
 
 -------------------------------------------------
 
