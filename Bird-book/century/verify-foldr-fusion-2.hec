@@ -10,14 +10,8 @@
 --
 ---------------------------
 
-rule-to-lemma "foldr-fusion-2-cond-i"
-rule-to-lemma "foldr-fusion-2-cond-ii"
-rule-to-lemma "foldr-fusion-2-cond-iii"
 rule-to-lemma "foldr-fusion-2"
 
-verify-lemma "foldr-fusion-2-cond-i" (lemma-to-proof "map-strict")
-verify-lemma "foldr-fusion-2-cond-ii" (rewrite-to-proof (unfold 'map >>> case-reduce))
-load "lemma-foldr-fusion-2-cond-iii" "lemma-foldr-fusion-2-cond-iii.her"
-verify-lemma "foldr-fusion-2-cond-iii" (script-to-proof "lemma-foldr-fusion-2-cond-iii")
+load-as-rewrite "foldr-fusion-2-cond-iii" "lemma-foldr-fusion-2-cond-iii.her"
 
-verify-lemma "foldr-fusion-2" (foldr-fusion-proof (forward (lemma foldr-fusion-2-cond-i)) (forward (lemma foldr-fusion-2-cond-ii)) (forward (lemma foldr-fusion-2-cond-iii)))
+verify-lemma "foldr-fusion-2" (foldr-fusion-proof (forward (lemma "map-strict")) (unfold 'map >>> case-reduce) (foldr-fusion-2-cond-iii))
