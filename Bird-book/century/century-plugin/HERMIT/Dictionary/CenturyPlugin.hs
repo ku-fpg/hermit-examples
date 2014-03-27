@@ -80,11 +80,11 @@ foldrLocation :: String
 foldrLocation = "foldr" -- Data.List.foldr
 
 -- TODO: will crash if 'foldr' is not used (or explicitly imported) in the source file.
-findFoldrIdT :: (BoundVars c, HasGlobalRdrEnv c, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m a Id
+findFoldrIdT :: (BoundVars c, HasModGuts m, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m a Id
 findFoldrIdT = findIdT foldrLocation
 
 -- | Check if the current expression is \"foldr\" fully saturated with type arguments.
-isFoldrValT :: (BoundVars c, HasGlobalRdrEnv c, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m CoreExpr ()
+isFoldrValT :: (BoundVars c, HasModGuts m, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m CoreExpr ()
 isFoldrValT = prefixFailMsg "not a foldr expression fully saturated with type arguments: " $
                   withPatFailMsg (wrongExprForm "foldr ty1 ty2") $
                   do App (App (Var f) (Type _)) (Type _) <- idR
@@ -97,11 +97,11 @@ compLocation :: String
 compLocation = "." -- Data.Function.(.)
 
 -- TODO: will crash if '(.)' is not used (or explicitly imported) in the source file.
-findCompIdT :: (BoundVars c, HasGlobalRdrEnv c, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m a Id
+findCompIdT :: (BoundVars c, HasModGuts m, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m a Id
 findCompIdT = findIdT compLocation
 
 -- | Check if the current expression is \"(.)\" fully saturated with type arguments.
-isCompValT :: (BoundVars c, HasGlobalRdrEnv c, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m CoreExpr ()
+isCompValT :: (BoundVars c, HasModGuts m, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m CoreExpr ()
 isCompValT = prefixFailMsg "not a composition expression fully saturated with type arguments: " $
                   withPatFailMsg (wrongExprForm "(.) ty1 ty2 ty3") $
                   do App (App (App (Var f) (Type _)) (Type _)) (Type _) <- idR

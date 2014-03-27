@@ -90,6 +90,24 @@ value ((ds:fs):ts) = (10^n, valFact ds, valTerm fs, valExpr ts)
   where
     n = length ds
 
+-------------------------------------------------
+
+expressions :: [Digit] -> [Expression]
+expressions = foldr extend []
+
+solutions :: [Digit] -> [Expression]
+solutions = filter (good . value) . expressions
+
+-------------------------------------------------
+
+expressions2 :: [Digit] -> [(Expression, Value)]
+expressions2 = map (fork (id, value)) . foldr extend' []
+
+solutions2 :: [Digit] -> [Expression]
+solutions2 = map fst . filter (good . snd) . expressions2
+
+-------------------------------------------------
+
 extend :: Digit -> [Expression] -> [Expression]
 extend x []  = [[[[x]]]]
 extend x es  = concatMap (glue x) es
@@ -124,19 +142,13 @@ modify' d (k,f,t,e) = [(10*k,k*d+f,t,e),(10,d,f*t,e),(10,d,1,f*t+e)]
 
 -------------------------------------------------
 
-expressions :: [Digit] -> [Expression]
-expressions = foldr extend []
-
-solutions :: [Digit] -> [Expression]
-solutions = filter (good . value) . expressions
-
--------------------------------------------------
-
-solutions2 :: [Digit] -> [Expression]
-solutions2 = map fst . filter (good . snd) . expressions2
-
-expressions2 :: [Digit] -> [(Expression, Value)]
-expressions2 = map (fork (id, value)) . foldr extend' []
+-- Maybe better to introduce this during transformation.
+-- glue2 :: Digit -> (Expression,Value) -> [(Expression,Value)]
+-- glue2 x ((xs : xss) : xsss, (k,f,t,e)) =
+--                               [ ( ((x:xs):xss):xsss   , (10*k,k*x+f,t,e) )
+--                               , ( ([x]:xs:xss):xsss   , (10,x,f*t,e)     )
+--                               , ( [[x]]:(xs:xss):xsss , (10,x,1,f*t+e)   )
+--                               ]
 
 -------------------------------------------------
 
