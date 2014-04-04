@@ -1,6 +1,6 @@
 module Century where
 
-import Prelude hiding (zip,unzip,map,id,filter)
+import Prelude hiding (zip,unzip,map,filter)
 
 import Data.List (intercalate)
 
@@ -40,6 +40,7 @@ import Data.List (intercalate)
 {-# RULES "foldr-fusion-1" [1]  filter (ok . value)    . foldr extend  []  =  foldr extend' []  #-}
 {-# RULES "foldr-fusion-2" [1]  map (fork (id, value)) . foldr extend' []  =  foldr expand  []  #-}
 
+-- Rules below are not proved by HERMIT.
 
 {-# RULES "6.2"  [1]           filter (good . value)          = filter (good . value) . filter (ok . value)           #-}
 {-# RULES "6.3"  [1] forall x. filter (ok . value) . extend x = filter (ok . value) . extend x . filter (ok . value)  #-}
@@ -151,9 +152,6 @@ modify' d (k,f,t,e) = [(10*k,k*d+f,t,e),(10,d,f*t,e),(10,d,1,f*t+e)]
 --                               ]
 
 -------------------------------------------------
-
-id :: a -> a
-id a = a
 
 map :: (a -> b) -> [a] -> [b]
 map _ []     = []
