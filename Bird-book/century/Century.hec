@@ -1,6 +1,6 @@
 set-auto-corelint True
 
-{ prog-end
+{
   load-and-run "verify-comp-id.hec"
   load-and-run "verify-comp-assoc.hec"
   load-and-run "verify-comp-assoc4.hec"

@@ -2,8 +2,7 @@
 
 set-auto-corelint True
 
-{ prog-end
-
+{
   rule-to-lemma "Fusion Condition 1"
   rule-to-lemma "Fusion Condition 2"
   rule-to-lemma "Fusion Condition 3"
