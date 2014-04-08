@@ -20,7 +20,7 @@
 
         -- filter (ok . value) . extend x
 
-              { unfold-rule "6.3" ; backward (lemma (comp-assoc)) } -- TODO: cheating
+              { unfold-rule "6.3" ; lemma (comp-assoc) } -- Rule 6.3 is assumed.  TODO: Prove it.
 
         -- (filter (ok . value) . extend x) . filter (ok . value)
 

@@ -20,7 +20,7 @@
 
 --         zip (map f xs , map g xs)
 
-                { backward (lemma "6.9-eta") }
+                { lemma "6.9-eta" }
 
 --         map (fork (f , g)) xs
 

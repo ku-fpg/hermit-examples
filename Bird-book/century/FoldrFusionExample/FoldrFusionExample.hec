@@ -26,10 +26,10 @@ flatten-module
 {
   rhs-of 'lr
   lemma "Foldr Fusion Example"
-  backward (lemma "Foldr Fusion Example")
+  lemma "Foldr Fusion Example"
 }
 {
   rhs-of 'rl
-  backward (lemma "Foldr Fusion Example")
+  lemma "Foldr Fusion Example"
   lemma "Foldr Fusion Example"
 }

@@ -20,7 +20,7 @@
 
         -- map (fork (id, value)) . extend' x
 
-              { one-td (unfold 'extend') ; backward (lemma "comp-assoc") }
+              { one-td (unfold 'extend') ; lemma "comp-assoc" }
 
         -- map (fork (id, value)) . filter (ok . value) . extend x
 
@@ -55,7 +55,7 @@
 
             -- fork (extend x, (modify x . map value))
 
-                  { app-arg ; arg 2 ; backward (lemma "comp-id-R") }
+                  { app-arg ; arg 2 ; lemma "comp-id-R" }
 
             -- fork (extend x . id, (modify x . map value))
 

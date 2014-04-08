@@ -35,7 +35,7 @@
 
            -- filter (p . snd) (map (fork (f,g) xs))
 
-                 { backward ind-hyp-0 }
+                 { ind-hyp-0 }
 
            -- map (fork (f,g)) (filter (p . g) xs)
 

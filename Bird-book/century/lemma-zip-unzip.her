@@ -12,7 +12,7 @@
 
 -- zip . fork (map fst , map snd)
 
-           { backward (lemma "6.9") }
+           { lemma "6.9" }
 
 -- map (fork (fst , snd))
 
