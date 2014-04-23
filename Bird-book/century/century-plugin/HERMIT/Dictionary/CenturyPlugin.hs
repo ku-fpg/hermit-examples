@@ -1,6 +1,7 @@
 module HERMIT.Dictionary.CenturyPlugin (plugin) where
 
 import Control.Arrow ((<<<))
+import Control.Monad.IO.Class (MonadIO)
 
 import HERMIT.Context
 import HERMIT.Core
@@ -31,8 +32,8 @@ exts =
 
 -------------------------------------------------
 
-foldrFusionProof :: RewriteH Core -> RewriteH Core -> RewriteH Core -> ProofH
-foldrFusionProof r1 r2 r3 = foldrFusionProofR (extractR r1) (extractR r2) (extractR r3)
+foldrFusionProof :: RewriteH Core -> RewriteH Core -> RewriteH Core -> UserProofTechnique
+foldrFusionProof r1 r2 r3 = userProofTechnique $ foldrFusionProofR (extractR r1) (extractR r2) (extractR r3)
 
 -- | foldr fusion
 --
@@ -46,8 +47,8 @@ foldrFusionProof r1 r2 r3 = foldrFusionProofR (extractR r1) (extractR r2) (extra
 -----------------------------------------------------------------------
 --           f . foldr g a = foldr h b
 --
-foldrFusionProofR :: RewriteH CoreExpr -> RewriteH CoreExpr -> RewriteH CoreExpr -> ProofH
-foldrFusionProofR fstrict pbase pstep = userProofTechnique $ prefixFailMsg "foldr-fusion-proof failed: " $
+foldrFusionProofR :: RewriteH CoreExpr -> RewriteH CoreExpr -> RewriteH CoreExpr -> TransformH CoreExprEquality ()
+foldrFusionProofR fstrict pbase pstep = prefixFailMsg "foldr-fusion-proof failed: " $
   do CoreExprEquality vs lhs rhs <- idR
 
      withPatFailMsg "Lemma does not have the form:  f . foldr g a = foldr h b" $
@@ -80,11 +81,11 @@ foldrLocation :: String
 foldrLocation = "foldr" -- Data.List.foldr
 
 -- TODO: will crash if 'foldr' is not used (or explicitly imported) in the source file.
-findFoldrIdT :: (BoundVars c, HasModGuts m, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m a Id
+findFoldrIdT :: (BoundVars c, HasModGuts m, HasHscEnv m, MonadCatch m, HasDynFlags m, MonadThings m, MonadIO m) => Translate c m a Id
 findFoldrIdT = findIdT foldrLocation
 
 -- | Check if the current expression is \"foldr\" fully saturated with type arguments.
-isFoldrValT :: (BoundVars c, HasModGuts m, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m CoreExpr ()
+isFoldrValT :: (BoundVars c, HasModGuts m, HasHscEnv m, MonadCatch m, HasDynFlags m, MonadThings m, MonadIO m) => Translate c m CoreExpr ()
 isFoldrValT = prefixFailMsg "not a foldr expression fully saturated with type arguments: " $
                   withPatFailMsg (wrongExprForm "foldr ty1 ty2") $
                   do App (App (Var f) (Type _)) (Type _) <- idR
@@ -97,11 +98,11 @@ compLocation :: String
 compLocation = "." -- Data.Function.(.)
 
 -- TODO: will crash if '(.)' is not used (or explicitly imported) in the source file.
-findCompIdT :: (BoundVars c, HasModGuts m, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m a Id
+findCompIdT :: (BoundVars c, HasModGuts m, HasHscEnv m, MonadCatch m, HasDynFlags m, MonadThings m, MonadIO m) => Translate c m a Id
 findCompIdT = findIdT compLocation
 
 -- | Check if the current expression is \"(.)\" fully saturated with type arguments.
-isCompValT :: (BoundVars c, HasModGuts m, MonadCatch m, HasDynFlags m, MonadThings m) => Translate c m CoreExpr ()
+isCompValT :: (BoundVars c, HasModGuts m, HasHscEnv m, MonadCatch m, HasDynFlags m, MonadThings m, MonadIO m) => Translate c m CoreExpr ()
 isCompValT = prefixFailMsg "not a composition expression fully saturated with type arguments: " $
                   withPatFailMsg (wrongExprForm "(.) ty1 ty2 ty3") $
                   do App (App (App (Var f) (Type _)) (Type _)) (Type _) <- idR
