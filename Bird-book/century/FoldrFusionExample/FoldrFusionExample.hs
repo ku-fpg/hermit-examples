@@ -7,13 +7,13 @@ module FoldrFusionExample where
 --           f . foldr g a = foldr h b
 --
 
-{-# RULES "Fusion Condition 1" [~]  f undefined  =  undefined  #-}
+{-# RULES "Fusion Condition 1" [1]  f undefined  =  undefined  #-}
 
-{-# RULES "Fusion Condition 2" [~]  f a  =  b  #-}
+{-# RULES "Fusion Condition 2" [1]  f a  =  b  #-}
 
-{-# RULES "Fusion Condition 3" [~]  forall x y.  f (g x y)  =  h x (f y)  #-}
+{-# RULES "Fusion Condition 3" [1]  forall x y.  f (g x y)  =  h x (f y)  #-}
 
-{-# RULES "Foldr Fusion Example" [~]  f . foldr g a  =  foldr h b  #-}
+{-# RULES "Foldr Fusion Example" [1]  f . foldr g a  =  foldr h b  #-}
 
 data A = A1 | A2
 data B = B1 | B2
