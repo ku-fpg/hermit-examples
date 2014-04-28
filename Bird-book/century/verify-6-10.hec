@@ -16,9 +16,9 @@ both (unfold '.)
 
 induction 'xs
 
-  any-bu ((unfold 'map <+ unfold 'filter) >>> undefined-case)
+  any-bu (unfold [ 'map , 'filter ] >>> undefined-case)
 
-  any-bu ((unfold 'map <+ unfold 'filter) >>> case-reduce)
+  any-bu (unfold [ 'map , 'filter ] >>> case-reduce)
 
   load-as-rewrite "6.10-cons-left"  "lemma-6-10-cons-left.her"
   load-as-rewrite "6.10-cons-right" "lemma-6-10-cons-right.her"

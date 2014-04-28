@@ -27,7 +27,7 @@ import Data.List (intercalate)
 
 {-# RULES "zip-unzip"    [1]  zip . unzip  =  id       #-}
 
-{-# RULES "6.9"  [1] forall f g.     map (fork (f , g))                =  zip . fork (map f , map g)            #-}
+{-# RULES "6.9"  [1] forall f g.    map (fork (f , g))                 =  zip . fork (map f , map g)            #-}
 {-# RULES "6.10" [1] forall f g p.  map (fork (f,g)) . filter (p . g)  =  filter (p . snd) . map (fork (f,g))   #-}
 
 {-# RULES "foldr-fusion-1" [1]  filter (ok . value)    . foldr extend  []  =  foldr extend' []  #-}
