@@ -24,12 +24,11 @@ import Data.List (intercalate)
 {-# RULES "6.6"  [1] forall f g h.   fork (f,g) . h        =  fork (f . h, g . h)           #-}
 {-# RULES "6.7"  [1] forall f g h k. fork (f . h, g . k)   =  cross (f,g) . fork (h,k)      #-}
 {-# RULES "6.8"  [1] forall f g.     fork (map f , map g)  =  unzip . map (fork (f , g))    #-}
-{-# RULES "6.9"  [1] forall f g.     map (fork (f , g))    =  zip . fork (map f , map g)    #-}
 
-{-# RULES "fork-fst-snd" [1]  fork (fst , snd)  =  id  #-}
 {-# RULES "zip-unzip"    [1]  zip . unzip  =  id       #-}
 
-{-# RULES "6.10" [1] forall f g p.  map (fork (f,g)) . filter (p . g)  =  filter (p . snd) . map (fork (f,g))     #-}
+{-# RULES "6.9"  [1] forall f g.     map (fork (f , g))                =  zip . fork (map f , map g)            #-}
+{-# RULES "6.10" [1] forall f g p.  map (fork (f,g)) . filter (p . g)  =  filter (p . snd) . map (fork (f,g))   #-}
 
 {-# RULES "foldr-fusion-1" [1]  filter (ok . value)    . foldr extend  []  =  foldr extend' []  #-}
 {-# RULES "foldr-fusion-2" [1]  map (fork (id, value)) . foldr extend' []  =  foldr expand  []  #-}

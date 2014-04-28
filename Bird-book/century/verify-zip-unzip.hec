@@ -6,13 +6,63 @@
 --
 ---------------------------
 
-rule-to-lemma "fork-fst-snd"
 rule-to-lemma "zip-unzip"
-
-load-as-rewrite "fork-fst-snd-proof" "lemma-fork-fst-snd.her"
-prove-lemma "fork-fst-snd"
-lhs fork-fst-snd-proof
-
-load-as-rewrite "zip-unzip-proof" "lemma-zip-unzip.her"
 prove-lemma "zip-unzip"
-lhs "zip-unzip-proof"
+
+extensionality 'xys
+smash
+
+-- zip (unzip xyz) = xys
+
+any-call (unfold 'unzip)
+
+-- zip (fork (map fst , map snd) xys) = xys
+
+any-call (unfold 'fork >>> case-reduce)
+
+-- zip (map fst xys , map snd xys) = xys
+
+induction 'xys
+
+  -- Case undefined
+
+     -- zip (map fst undefined , map snd undefined) = undefined
+
+     any-call (unfold 'map >>> undefined-case)
+
+     -- zip (undefined , undefined) = undefined
+
+     unfold 'zip
+     smash
+     undefined-case
+
+     -- undefined = undefined
+
+  -- Case []
+
+     -- zip (map fst [] , map snd []) = []
+
+     any-call (unfold 'map >>> case-reduce)
+
+     -- zip ([],[]) = []
+
+     unfold 'zip
+     smash
+
+     -- [] = []
+
+  -- Case (:), induction hypothesis: zip (map fst as , map snd as) = zs
+
+     -- zip (map fst (a:as) , map snd (a:as)) = a:as
+
+     any-call (unfold 'map >>> case-reduce)
+
+     -- zip (fst a : map fst as , snd a : map snd as) = a:as
+
+     rhs (one-td (backward (lemma (ind-hyp-0))))
+
+     -- zip (fst a : map fst as , snd a : map snd as) = z : zip (map fst as , map snd as)
+
+     lhs (unfold 'zip)
+     case-split-inline 'a
+     smash

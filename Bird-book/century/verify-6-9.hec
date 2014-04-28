@@ -6,39 +6,8 @@
 --
 ---------------------------
 
+load-as-rewrite "lemma-6.9" "lemma-6-9.her"
+
 rule-to-lemma "6.9"
 prove-lemma "6.9"
-
-extensionality 'xs
-rhs (unfold '.)
-rhs (one-td (unfold 'fork >>> case-reduce))
-
--- map (fork (f , g)) xs  =  zip (map f xs , map g xs)
-
-induction 'xs
-
-  -- Case undefined
-     -- map (fork (f , g)) undefined  =  zip (map f undefined , map g undefined)
-  both (any-td (forward (lemma map-strict)))
-     -- undefined  =  zip (undefined , undefined)
-  unfold 'zip
-  smash
-  undefined-case
-
-  -- Case []
-     -- map (fork (f , g)) []  =  zip (map f [] , map g [])
-  both (any-td (unfold 'map >>> case-reduce))
-     -- []  =  zip ([], [])
-  unfold 'zip
-  smash
-
-  -- Case (:), induction hypothesis: map (fork (f , g)) ys  =  zip (map f ys , map g ys)
-     -- map (fork (f , g)) (y:ys)  =  zip (map f (y:ys) , map g (y:ys))
-  any-bu (unfold 'map >>> case-reduce)
-     -- fork (f , g) y : map (fork (f , g)) ys  =  zip (f y : map f ys , g y : map g ys)
-  one-td (forward (lemma ind-hyp-0))
-     -- fork (f , g) y : zip (map f ys , map g ys)  =  zip (f y : map f ys , g y : map g ys)
-  lhs (one-td (unfold 'fork >>> case-reduce))
-     -- (f y , g y) : zip (map f ys , map g ys)  =  zip (f y : map f ys , g y : map g ys)
-  rhs (unfold 'zip >>> smash)
-     -- (f y , g y) : zip (map f ys , map g ys)  =  (f y , g y) : zip (map f ys , map g ys)
+rhs lemma-6.9

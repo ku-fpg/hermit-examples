@@ -12,11 +12,11 @@ set-auto-corelint True
   load-and-run "verify-6-6.hec"
   load-and-run "verify-6-7.hec"
   load-and-run "verify-6-8.hec"
-  load-and-run "verify-6-9.hec"
   load-and-run "verify-zip-unzip.hec"
---  load-and-run "verify-6-10.hec"
+  load-and-run "verify-6-9.hec"
+  load-and-run "verify-6-10.hec"
   load-and-run "verify-foldr-fusion-1.hec"
---  load-and-run "verify-foldr-fusion-2.hec"
+  load-and-run "verify-foldr-fusion-2.hec"
 }
 
 
@@ -47,15 +47,15 @@ set-auto-corelint True
 
 }
 
--- { rhs-of 'expressions2
+{ rhs-of 'expressions2
 
---   -- map (fork (id,value)) . foldr extend' []
+  -- map (fork (id,value)) . foldr extend' []
 
---         { lemma "foldr-fusion-2" }
+        { lemma "foldr-fusion-2" }
 
---   -- foldr expand []
+  -- foldr expand []
 
--- }
+}
 
 { rhs-of 'solutions2
 
