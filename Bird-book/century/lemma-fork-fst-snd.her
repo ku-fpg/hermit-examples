@@ -1,5 +1,5 @@
 ---------------------------
--- Lemma fork-fst.snd
+-- Lemma fork-fst-snd
 --
 -- fork (fst , snd)  =>  id
 --

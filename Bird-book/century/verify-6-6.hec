@@ -8,5 +8,7 @@
 ---------------------------
 
 rule-to-lemma "6.6"
+prove-lemma "6.6"
 
-verify-lemma "6.6" (rewrite-both-sides-to-proof (one-td (inline 'fork) >>> smash) (unfold 'fork >>> smash))
+one-td (inline 'fork)
+smash

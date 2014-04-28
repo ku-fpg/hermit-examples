@@ -16,7 +16,7 @@
 
 -- fork (map fst . map (fork (f , g)) , map snd . map (fork (f , g)))
 
-           { any-td (backward (lemma "map-fusion")) }
+           { any-td (forward (lemma "map-fusion")) }
 
 -- fork (map (fst . fork (f , g)) , map (snd . fork (f , g)))
 

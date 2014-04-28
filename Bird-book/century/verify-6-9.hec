@@ -7,9 +7,29 @@
 ---------------------------
 
 rule-to-lemma "6.9"
+prove-lemma "6.9"
 
-load-and-run "verify-6-9-eta.hec"
+extensionality 'xs
+rhs (unfold '.)
+rhs (one-td (unfold 'fork >>> case-reduce))
 
-load "6.9-proof" "lemma-6-9.her"
+-- map (fork (f , g)) xs  =  zip (map f xs , map g xs)
 
-verify-lemma "6.9" (flip-proof (script-to-proof "6.9-proof"))
+induction 'xs
+
+  -- Case undefined
+  both (any-td (forward (lemma map-strict)))
+  unfold 'zip
+  smash
+  undefined-case
+
+  -- Case []
+  both (any-td (unfold 'map >>> case-reduce))
+  unfold 'zip
+  smash
+
+  -- Case (:)
+  any-bu (unfold 'map >>> case-reduce)
+  one-td (forward (lemma ind-hyp-0))
+  lhs (one-td (unfold 'fork >>> case-reduce))
+  rhs (unfold 'zip >>> smash)

@@ -7,9 +7,17 @@
 ---------------------------
 
 rule-to-lemma "map-fusion"
+prove-lemma "map-fusion"
 
-load-and-run "verify-map-fusion-eta.hec"
+extensionality 'xs
+lhs (unfold '.)
 
-define-script "map-fusion-proof" "eta-expand 'xs ; { lam-body ; lemma map-fusion-eta } ; eta-reduce"
+induction 'xs
 
-verify-lemma "map-fusion" (script-to-proof "map-fusion-proof")
+  both (any-call (unfold 'map >>> undefined-expr))
+
+  both (any-call (unfold 'map >>> case-reduce))
+
+  both (any-call (unfold 'map >>> case-reduce))
+  rhs (one-td (backward (lemma ind-hyp-0)))
+  rhs (one-td (unfold '.))

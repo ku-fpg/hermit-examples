@@ -6,8 +6,8 @@
 --
 ---------------------------
 
+load-as-rewrite "lemma-6.8" "lemma-6-8.her"
+
 rule-to-lemma "6.8"
-
-load "lemma-6.8" "lemma-6-8.her"
-
-verify-lemma "6.8" (flip-proof (script-to-proof "lemma-6.8"))
+prove-lemma "6.8"
+rhs "lemma-6.8"

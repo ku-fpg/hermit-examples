@@ -8,7 +8,9 @@
 ---------------------------
 
 rule-to-lemma "comp-id-L"
-rule-to-lemma "comp-id-R"
+prove-lemma "comp-id-L"
+lhs smash
 
-verify-lemma "comp-id-L" (rewrite-to-proof smash)
-verify-lemma "comp-id-R" (rewrite-to-proof smash)
+rule-to-lemma "comp-id-R"
+prove-lemma "comp-id-R"
+lhs smash

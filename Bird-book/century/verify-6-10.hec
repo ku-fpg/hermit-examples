@@ -6,11 +6,21 @@
 --
 ---------------------------
 
-load-and-run "verify-6-10-eta.hec"
-
 rule-to-lemma "6.10"
+prove-lemma "6.10"
 
-define-script "6.10-proof-left"  "unfold ; { lam-body ; lemma 6.10-eta }"
-define-script "6.10-proof-right" "unfold"
+extensionality 'xs
+both (unfold '.)
 
-verify-lemma "6.10" (script-both-sides-to-proof "6.10-proof-left" "6.10-proof-right")
+-- map (fork (f,g)) (filter (p . g) xs)  =  filter (p . snd) (map (fork (f,g)) xs)
+
+induction 'xs
+
+  any-bu ((unfold 'map <+ unfold 'filter) >>> undefined-case)
+
+  any-bu ((unfold 'map <+ unfold 'filter) >>> case-reduce)
+
+  load-as-rewrite "6.10-cons-left"  "lemma-6-10-cons-left.her"
+  load-as-rewrite "6.10-cons-right" "lemma-6-10-cons-right.her"
+  lhs 6.10-cons-left
+  rhs 6.10-cons-right

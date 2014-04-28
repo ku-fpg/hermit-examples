@@ -7,4 +7,5 @@
 
 rule-to-lemma "comp-assoc4"
 
-verify-lemma "comp-assoc4" (rewrite-both-sides-to-proof smash smash)
+prove-lemma "comp-assoc4"
+both smash

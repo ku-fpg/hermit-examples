@@ -7,7 +7,9 @@
 ---------------------------
 
 rule-to-lemma "6.5a"
-rule-to-lemma "6.5b"
+prove-lemma "6.5a"
+lhs (one-td (inline 'fork) >>> smash)
 
-verify-lemma "6.5a" (rewrite-to-proof (one-td (inline 'fork) >>> smash))
-verify-lemma "6.5b" (rewrite-to-proof (one-td (inline 'fork) >>> smash))
+rule-to-lemma "6.5b"
+prove-lemma "6.5b"
+lhs (one-td (inline 'fork) >>> smash)

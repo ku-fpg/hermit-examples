@@ -10,8 +10,9 @@
 --
 ---------------------------
 
-rule-to-lemma "foldr-fusion-1"
-
 load-as-rewrite "foldr-fusion-1-cond-iii" "lemma-foldr-fusion-1-cond-iii.her"
 
-verify-lemma "foldr-fusion-1" (foldr-fusion-proof (forward (lemma "filter-strict")) (unfold 'filter >>> case-reduce) (foldr-fusion-1-cond-iii))
+rule-to-lemma "foldr-fusion-1"
+prove-lemma "foldr-fusion-1"
+
+foldr-fusion-proof (forward (lemma "filter-strict")) (unfold 'filter >>> case-reduce) foldr-fusion-1-cond-iii

@@ -1,5 +1,5 @@
 ---------------------------
--- Lemma 6.10-eta (cons case, right)
+-- Lemma 6.10 (cons case, right)
 --
 -- forall f g p x xs.
 --
@@ -35,7 +35,7 @@
 
            -- filter (p . snd) (map (fork (f,g) xs))
 
-                 { ind-hyp-0 }
+                 { lemma ind-hyp-0 }
 
            -- map (fork (f,g)) (filter (p . g) xs)
 
@@ -57,5 +57,3 @@
 -- case p (g x) of
 --   False -> map (fork (f,g)) (filter (p . g) xs)
 --   True  -> fork (f,g) x : map (fork (f,g)) (filter (p . g) xs)
-
-

@@ -1,5 +1,5 @@
 ---------------------------
--- Lemma 6.10-eta (cons case, left)
+-- Lemma 6.10 (cons case, left)
 --
 -- forall f g p x xs.
 --

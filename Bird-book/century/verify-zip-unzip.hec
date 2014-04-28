@@ -9,8 +9,10 @@
 rule-to-lemma "fork-fst-snd"
 rule-to-lemma "zip-unzip"
 
-load "fork-fst-snd-proof" "lemma-fork-fst-snd.her"
-verify-lemma "fork-fst-snd" (script-to-proof "fork-fst-snd-proof")
+load-as-rewrite "fork-fst-snd-proof" "lemma-fork-fst-snd.her"
+prove-lemma "fork-fst-snd"
+lhs fork-fst-snd-proof
 
-load "zip-unzip-proof" "lemma-zip-unzip.her"
-verify-lemma "zip-unzip" (script-to-proof "zip-unzip-proof")
+load-as-rewrite "zip-unzip-proof" "lemma-zip-unzip.her"
+prove-lemma "zip-unzip"
+lhs "zip-unzip-proof"

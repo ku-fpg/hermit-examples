@@ -6,45 +6,41 @@ import Data.List (intercalate)
 
 -------------------------------------------------
 
-{-# RULES "comp-id-L"     [~] forall f.     id . f      = f              #-}
-{-# RULES "comp-id-R"     [~] forall f.     f . id      = f              #-}
-{-# RULES "comp-assoc"    [~] forall f g h. (f . g) . h = f . (g . h)    #-}
+{-# RULES "comp-id-L"     [1] forall f.     id . f      = f              #-}
+{-# RULES "comp-id-R"     [1] forall f.     f . id      = f              #-}
+{-# RULES "comp-assoc"    [1] forall f g h. (f . g) . h = f . (g . h)    #-}
 
 -- This is ugly.
-{-# RULES "comp-assoc4"   [~] forall f g h k l.  f . g . h . k . l  = (f . g . h . k) . l  #-}
+{-# RULES "comp-assoc4"   [1] forall f g h k l.  f . g . h . k . l  = (f . g . h . k) . l  #-}
 
-{-# RULES "map-fusion"     [~] forall f g.     map (f . g)    = map f . map g       #-}
-{-# RULES "map-fusion-eta" [~] forall f g xs.  map (f . g) xs = (map f . map g) xs  #-}
+{-# RULES "map-id"        [1]              map id         =  id           #-}
+{-# RULES "map-fusion"    [1] forall f g.  map f . map g  =  map (f . g)  #-}
 
-{-# RULES "map-id"        [~]               map id      = id   #-}
-{-# RULES "map-id-eta"    [~] forall xs.    map id xs   = xs   #-}
+{-# RULES "map-strict"    [1] forall f.  map f undefined    = undefined  #-}
+{-# RULES "filter-strict" [1] forall p.  filter p undefined = undefined  #-}
 
-{-# RULES "map-strict"    [~] forall f.  map f undefined    = undefined  #-}
-{-# RULES "filter-strict" [~] forall p.  filter p undefined = undefined  #-}
+{-# RULES "6.5a"  [1] forall f g.     fst . fork (f,g)     = f                             #-}
+{-# RULES "6.5b"  [1] forall f g.     snd . fork (f,g)     = g                             #-}
+{-# RULES "6.6"   [1] forall f g h.   fork (f,g) . h       = fork (f . h, g . h)           #-}
+{-# RULES "6.7"   [1] forall f g h k. fork (f . h, g . k)  = cross (f,g) . fork (h,k)      #-}
+{-# RULES "6.8"   [1] forall f g.     fork (map f , map g) = unzip . map (fork (f , g))    #-}
 
-{-# RULES "6.5a"  [~] forall f g.     fst . fork (f,g)     = f                             #-}
-{-# RULES "6.5b"  [~] forall f g.     snd . fork (f,g)     = g                             #-}
-{-# RULES "6.6"   [~] forall f g h.   fork (f,g) . h       = fork (f . h, g . h)           #-}
-{-# RULES "6.7"   [~] forall f g h k. fork (f . h, g . k)  = cross (f,g) . fork (h,k)      #-}
-{-# RULES "6.8"   [~] forall f g.     fork (map f , map g) = unzip . map (fork (f , g))    #-}
+{-# RULES "6.9"     [1] forall f g.     map (fork (f , g))      =  zip . fork (map f , map g)   #-}
+{-# RULES "6.9-eta" [1] forall f g xs.  map (fork (f , g)) xs   =  zip (map f xs , map g xs)    #-}
 
-{-# RULES "6.9"     [~] forall f g.     map (fork (f , g))      =  zip . fork (map f , map g)   #-}
-{-# RULES "6.9-eta" [~] forall f g xs.  map (fork (f , g)) xs   =  zip (map f xs , map g xs)    #-}
+{-# RULES "fork-fst-snd" [1]  fork (fst , snd)  =  id  #-}
+{-# RULES "zip-unzip"    [1]  zip . unzip  =  id       #-}
 
-{-# RULES "fork-fst-snd" [~]  fork (fst , snd)  =  id  #-}
-{-# RULES "zip-unzip"    [~]  zip . unzip  =  id       #-}
+{-# RULES "6.10"      [1] forall f g p.      map (fork (f,g)) . filter (p . g)     =  filter (p . snd) . map (fork (f,g))     #-}
 
-{-# RULES "6.10"      [~] forall f g p.      map (fork (f,g)) . filter (p . g)     =  filter (p . snd) . map (fork (f,g))     #-}
-{-# RULES "6.10-eta"  [~] forall f g p xs.   map (fork (f,g)) (filter (p . g) xs)  =  filter (p . snd) (map (fork (f,g)) xs)  #-}
-
-{-# RULES "foldr-fusion-1" [~]  filter (ok . value)    . foldr extend  []  =  foldr extend' []  #-}
-{-# RULES "foldr-fusion-2" [~]  map (fork (id, value)) . foldr extend' []  =  foldr expand  []  #-}
+{-# RULES "foldr-fusion-1" [1]  filter (ok . value)    . foldr extend  []  =  foldr extend' []  #-}
+{-# RULES "foldr-fusion-2" [1]  map (fork (id, value)) . foldr extend' []  =  foldr expand  []  #-}
 
 -- Rules below are not proved by HERMIT.
 
-{-# RULES "6.2"  [~]           filter (good . value)          = filter (good . value) . filter (ok . value)           #-}
-{-# RULES "6.3"  [~] forall x. filter (ok . value) . extend x = filter (ok . value) . extend x . filter (ok . value)  #-}
-{-# RULES "6.4"  [~] forall x. map value . extend x           = modify x . map value                                  #-}
+{-# RULES "6.2"  [1]           filter (good . value)          = filter (good . value) . filter (ok . value)           #-}
+{-# RULES "6.3"  [1] forall x. filter (ok . value) . extend x = filter (ok . value) . extend x . filter (ok . value)  #-}
+{-# RULES "6.4"  [1] forall x. map value . extend x           = modify x . map value                                  #-}
 
 -------------------------------------------------
 

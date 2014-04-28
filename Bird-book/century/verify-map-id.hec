@@ -7,9 +7,16 @@
 ---------------------------
 
 rule-to-lemma "map-id"
+prove-lemma "map-id"
 
-load-and-run "verify-map-id-eta.hec"
+extensionality 'x
+rhs (unfold 'id)
+induction 'x
 
-define-script "map-id-proof" "eta-expand 'xs ; { lam-body ; lemma map-id-eta } ; fold 'id"
+  lemma "map-strict"
 
-verify-lemma "map-id" (script-to-proof "map-id-proof")
+  lhs (unfold 'map >>> case-reduce)
+
+  lhs (unfold 'map >>> case-reduce)
+  one-td (forward (lemma ind-hyp-0))
+  any-td (unfold 'id)

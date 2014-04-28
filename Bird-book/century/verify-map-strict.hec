@@ -8,4 +8,5 @@
 
 rule-to-lemma "map-strict"
 
-verify-lemma "map-strict" (rewrite-to-proof (unfold 'map >>> undefined-expr))
+prove-lemma "map-strict"
+lhs (unfold 'map >>> undefined-expr)
