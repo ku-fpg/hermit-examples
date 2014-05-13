@@ -6,9 +6,12 @@ Then install the plugin that contains the Foldr Fusion proof technique:
 
 > cd century-plugin
 > cabal install
-> cd ..
 
-You should then be able to run the entire case study as follows:
+The Foldr Fusion plugin can be tested by descending into the FoldrFusionExample directory and invoking HERMIT as follows:
+
+> hermit FoldrFusionExample.hs -opt=HERMIT.Dictionary.CenturyPlugin +FoldrFusionExample FoldrFusionExample.hec
+
+To run the entire case study, invoke HERMIT in this directory as follows:
 
 > hermit Century.hs -opt=HERMIT.Dictionary.CenturyPlugin Century.hec
 

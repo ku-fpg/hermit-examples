@@ -12,6 +12,7 @@ set-auto-corelint True
   -- f undefined = undefined
   unfold 'f
   undefined-case
+  end-proof
 
   prove-lemma "Fusion Condition 2"
   -- f a = b
@@ -19,12 +20,14 @@ set-auto-corelint True
   unfold 'f
   case-reduce
   fold 'b
+  end-proof
 
   prove-lemma "Fusion Condition 3"
   -- f (g x y) = h x (f y)
   both (any-call (unfold [ 'h , 'g , 'f ]))
   lhs case-float-case
   one-td case-reduce
+  end-proof
 
   prove-lemma "Foldr Fusion Example"
   -- f . foldr g a = foldr h b

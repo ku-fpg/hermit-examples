@@ -1,3 +1,5 @@
+-- hermit Century.hs -opt=HERMIT.Dictionary.CenturyPlugin Century.hec
+
 set-auto-corelint True
 
 {
