@@ -9,5 +9,7 @@
 load-as-rewrite "lemma-6.8" "lemma-6-8.her"
 
 rule-to-lemma "6.8"
+
 prove-lemma "6.8"
-rhs "lemma-6.8"
+  rhs "lemma-6.8"
+end-proof

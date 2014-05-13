@@ -17,10 +17,13 @@ both (unfold '.)
 induction 'xs
 
   any-bu (unfold [ 'map , 'filter ] >>> undefined-case)
+  end-case
 
   any-bu (unfold [ 'map , 'filter ] >>> case-reduce)
+  end-case
 
   load-as-rewrite "6.10-cons-left"  "lemma-6-10-cons-left.her"
   load-as-rewrite "6.10-cons-right" "lemma-6-10-cons-right.her"
   lhs 6.10-cons-left
   rhs 6.10-cons-right
+  end-case

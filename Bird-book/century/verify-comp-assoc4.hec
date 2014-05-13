@@ -8,4 +8,5 @@
 rule-to-lemma "comp-assoc4"
 
 prove-lemma "comp-assoc4"
-both smash
+  both smash
+end-proof

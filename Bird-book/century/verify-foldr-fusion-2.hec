@@ -13,5 +13,7 @@
 load-as-rewrite "foldr-fusion-2-cond-iii" "lemma-foldr-fusion-2-cond-iii.her"
 
 rule-to-lemma "foldr-fusion-2"
+
 prove-lemma "foldr-fusion-2"
+
 foldr-fusion-proof (forward (lemma "map-strict")) (unfold 'map >>> case-reduce) foldr-fusion-2-cond-iii

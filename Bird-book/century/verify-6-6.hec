@@ -9,6 +9,6 @@
 
 rule-to-lemma "6.6"
 prove-lemma "6.6"
-
-one-td (inline 'fork)
-smash
+  one-td (inline 'fork)
+  smash
+end-proof

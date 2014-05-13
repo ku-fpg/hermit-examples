@@ -7,6 +7,9 @@
 ---------------------------
 
 rule-to-lemma "filter-strict"
+
 prove-lemma "filter-strict"
 
-lhs (unfold 'filter >>> undefined-expr)
+  lhs (unfold 'filter >>> undefined-expr)
+
+end-proof

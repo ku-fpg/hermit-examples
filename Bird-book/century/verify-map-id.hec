@@ -14,9 +14,12 @@ rhs (unfold 'id)
 induction 'x
 
   lemma "map-strict"
+  end-case
 
   lhs (unfold 'map >>> case-reduce)
+  end-case
 
   lhs (unfold 'map >>> case-reduce)
   one-td (forward (lemma ind-hyp-0))
   any-td (unfold 'id)
+  end-case

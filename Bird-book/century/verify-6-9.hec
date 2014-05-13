@@ -10,4 +10,5 @@ load-as-rewrite "lemma-6.9" "lemma-6-9.her"
 
 rule-to-lemma "6.9"
 prove-lemma "6.9"
-rhs lemma-6.9
+  rhs lemma-6.9
+end-proof

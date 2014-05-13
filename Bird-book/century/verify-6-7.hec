@@ -11,3 +11,5 @@ rule-to-lemma "6.7"
 prove-lemma "6.7"
 
 smash-extended-with [inline [ 'cross , 'fork ]]
+
+end-proof

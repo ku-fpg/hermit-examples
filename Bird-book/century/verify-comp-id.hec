@@ -9,8 +9,10 @@
 
 rule-to-lemma "comp-id-L"
 prove-lemma "comp-id-L"
-lhs smash
+  lhs smash
+end-proof
 
 rule-to-lemma "comp-id-R"
 prove-lemma "comp-id-R"
-lhs smash
+  lhs smash
+end-proof

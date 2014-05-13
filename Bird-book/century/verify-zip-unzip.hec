@@ -38,6 +38,8 @@ induction 'xys
 
      -- undefined = undefined
 
+     end-case
+
   -- Case []
 
      -- zip (map fst [] , map snd []) = []
@@ -50,6 +52,8 @@ induction 'xys
      smash
 
      -- [] = []
+
+     end-case
 
   -- Case (:), induction hypothesis: zip (map fst as , map snd as) = zs
 
@@ -66,3 +70,5 @@ induction 'xys
      lhs (unfold 'zip)
      case-split-inline 'a
      smash
+
+     end-case

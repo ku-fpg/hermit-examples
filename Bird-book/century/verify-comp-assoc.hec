@@ -10,4 +10,5 @@
 rule-to-lemma "comp-assoc"
 
 prove-lemma "comp-assoc"
-both smash
+  both smash
+end-proof

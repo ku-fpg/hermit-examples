@@ -8,8 +8,10 @@
 
 rule-to-lemma "6.5a"
 prove-lemma "6.5a"
-lhs (one-td (inline 'fork) >>> smash)
+  lhs (one-td (inline 'fork) >>> smash)
+end-proof
 
 rule-to-lemma "6.5b"
 prove-lemma "6.5b"
-lhs (one-td (inline 'fork) >>> smash)
+  lhs (one-td (inline 'fork) >>> smash)
+end-proof
