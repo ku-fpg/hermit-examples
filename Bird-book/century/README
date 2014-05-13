@@ -1,0 +1,17 @@
+First install HERMIT, which can be done via Cabal:
+
+> cabal install hermit
+
+Then install the plugin that contains the Foldr Fusion proof technique:
+
+> cd century-plugin
+> cabal install
+> cd ..
+
+You should then be able to run the entire case study as follows:
+
+> hermit Century.hs -opt=HERMIT.Dictionary.CenturyPlugin Century.hec
+
+If it runs successfully, you can use the HERMIT command "show-lemmas" to display all the lemmas (which should be noted as proved).
+
+hermit> show-lemmas
