@@ -1,3 +1,5 @@
+Note: this case study requires GHC >= 7.8 to run.
+
 First install HERMIT, which can be done via Cabal:
 
 > cabal install hermit
