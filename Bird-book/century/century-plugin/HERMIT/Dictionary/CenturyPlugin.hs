@@ -78,7 +78,7 @@ foldrFusionProofR fstrict pbase pstep = prefixFailMsg "foldr-fusion-proof failed
 -------------------------------------------------
 
 foldrLocation :: String
-foldrLocation = "foldr" -- Data.List.foldr
+foldrLocation = "Data.List.foldr"
 
 -- TODO: will crash if 'foldr' is not used (or explicitly imported) in the source file.
 findFoldrIdT :: (BoundVars c, HasModGuts m, HasHscEnv m, MonadCatch m, HasDynFlags m, MonadThings m, MonadIO m) => Translate c m a Id
@@ -95,7 +95,7 @@ isFoldrValT = prefixFailMsg "not a foldr expression fully saturated with type ar
 -------------------------------------------------
 
 compLocation :: String
-compLocation = "." -- Data.Function.(.)
+compLocation = "Data.Function.." -- parentheses not needed
 
 -- TODO: will crash if '(.)' is not used (or explicitly imported) in the source file.
 findCompIdT :: (BoundVars c, HasModGuts m, HasHscEnv m, MonadCatch m, HasDynFlags m, MonadThings m, MonadIO m) => Translate c m a Id
